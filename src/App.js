@@ -1,11 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from "./componets/Sidebar";
 
 function App() {
   return (
-    <div className="App">
-      <h1>hello</h1>
-    </div>
+    <>
+      <Sidebar/>
+    </>
   );
 }
 
