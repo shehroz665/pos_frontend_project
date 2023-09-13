@@ -13,7 +13,7 @@
   }
   
   .sidebar-link:hover {
-    background: #252831;
+    background: #123bb7;
     border-left: 4px solid #632ce4;
     cursor: pointer;
   }
@@ -23,7 +23,7 @@
   }
   
   .dropdown-link {
-    background: #414757;
+    background: #123bb7;
     height: 60px;
     padding-left: 3rem;
     display: flex;
@@ -34,7 +34,7 @@
   }
   
   .dropdown-link:hover {
-    background: #632ce4;
+    background: #3c66e6;
     cursor: pointer;
   }
   

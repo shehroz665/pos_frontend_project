@@ -1,5 +1,5 @@
 .nav {
-    background: #15171c;
+    background: #022888;
     height: 80px;
     display: flex;
     justify-content: flex-start;
@@ -28,7 +28,7 @@
   }
   
   .sidebar-nav {
-    background: #15171c;
+    background: #0c49e1;
     width: 250px;
     height: 100vh;
     display: flex;
