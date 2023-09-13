@@ -6,24 +6,7 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
-
-const Nav = styled.div`
-  background: #15171c;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const NavIcon = styled(Link)`
-  margin-left: 2rem;
-  font-size: 2rem;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
+import './Sidebar.css';
 const SidebarNav = styled.nav`
   background: #15171c;
   width: 250px;
@@ -36,33 +19,27 @@ const SidebarNav = styled.nav`
   transition: 350ms;
   z-index: 10;
 `;
-
-const SidebarWrap = styled.div`
-  width: 100%;
-`;
-
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
-
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
-        <Nav>
-          <NavIcon to='#'>
+        <div className='nav'>
+          <Link to='#' className='nav-icon'>
             <FaIcons.FaBars onClick={showSidebar} />
-          </NavIcon>
-        </Nav>
+          </Link>
+        </div>
         <SidebarNav sidebar={sidebar}>
-          <SidebarWrap>
-            <NavIcon to='#'>
+          <div className='sidebar-wrap'>
+            <Link to='#' className='nav-icon'>
               <AiIcons.AiOutlineClose onClick={showSidebar} />
-            </NavIcon>
+            </Link>
             {SidebarData.map((item, index) => {
               return <SubMenu item={item} key={index} />;
             })}
-          </SidebarWrap>
+          </div>
         </SidebarNav>
       </IconContext.Provider>
     </>
@@ -70,3 +47,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
