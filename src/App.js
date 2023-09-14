@@ -11,28 +11,32 @@ import Statistics from './pages/Statistics';
 import Sales from './pages/Sales';
 import Logout from './pages/Logout';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
+import Splash from './pages/Auth/Splash';
 function App() {
   return (
-    <Router>
-      <Sidebar />
-      <Routes>
-        {/*Statistics */}
-        <Route path='/' element={<Statistics />} />
-        {/*Products */}
-        <Route path='/products' element={<Products />} />
-        <Route path='/product/add' element={<AddProduct />} />
-        {/*Product Category */}
-        <Route path='/productcategory' element={<ProductCategory />} />
-        <Route path='/productcategory/add' element={<AddProductCategory />} />
-        {/*Suppliers */}
-        <Route path='/suppliers' element={<Suppliers />} />
-        <Route path='/supplier/add' element={<AddSupplier />} />
+    // <Router>
+    //   <Sidebar />
+    //   <Routes>
+    //     {/*Statistics */}
+    //     <Route path='/' element={<Statistics />} />
+    //     {/*Products */}
+    //     <Route path='/products' element={<Products />} />
+    //     <Route path='/product/add' element={<AddProduct />} />
+    //     {/*Product Category */}
+    //     <Route path='/productcategory' element={<ProductCategory />} />
+    //     <Route path='/productcategory/add' element={<AddProductCategory />} />
+    //     {/*Suppliers */}
+    //     <Route path='/suppliers' element={<Suppliers />} />
+    //     <Route path='/supplier/add' element={<AddSupplier />} />
 
-        <Route path='/sales' element={<Sales />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/logout' element={<Logout />} />
-      </Routes>
-    </Router>
+    //     <Route path='/sales' element={<Sales />} />
+    //     <Route path='/settings' element={<Settings />} />
+    //     <Route path='/logout' element={<Logout />} />
+    //   </Routes>
+    // </Router>
+    // <Login/>
+    <Splash/>
   );
 }
 
