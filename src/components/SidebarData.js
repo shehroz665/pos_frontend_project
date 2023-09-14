@@ -11,7 +11,7 @@ import * as Fa6Icons from 'react-icons/fa6';
 export const SidebarData = [
   {
     title: 'Statistics',
-    path: '/',
+    path: '/statistics',
     icon: <Fa6Icons.FaChartSimple />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
