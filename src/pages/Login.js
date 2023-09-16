@@ -1,73 +1,110 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { showErrorAlert,showSuccessAlert } from './Alerts/Alert';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
 
+const Form = styled.form`
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+`;
+
+const Title = styled.h1`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const Button = styled.button`
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('admin@gmail.com');
   const [password, setPassword] = useState('admin123');
-  const [response, setResponse] = useState(null);
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Define the URL of your Laravel API login endpoint
-    const apiUrl = 'http://127.0.0.1:8000/api/login'; // Replace with your API endpoint
-
-    // Prepare the data to send in the POST request
+    const apiUrl = 'http://127.0.0.1:8000/api/login'; 
     const data = {
       email: email,
       password: password,
     };
-
     try {
       const response = await axios.post(apiUrl, data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
       console.log('responseData', response.data);
-
-      // Handle the response based on your Laravel API authentication logic
+      const token = response.data.data.token;
+      console.log('token',token);
+      localStorage.setItem('token', token);
       if (response.status === 200) {
-        // Authentication was successful
-        // You can store user data or a token in your state or context
-        // For simplicity, we'll just show a success message here
-        setResponse('Login successful');
+        showSuccessAlert('Login successful');
+        navigate('/statistics');      
       } else if(response.status === 401) {
-        // Authentication failed
-        setResponse('Login failed. Please check your credentials.');
+        showErrorAlert('Login failed. Please check your credentials');
       }
     } catch (error) {
       console.error('Error:', error);
-      setResponse('Login failed. Please check your credentials.');
+      showErrorAlert(error.message);
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={handleEmailChange} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-
-      {response && <p>{response}</p>}
-    </div>
+    <Container>
+    <Form onSubmit={handleSubmit}>
+      <Title>Sign In</Title>
+      <FormGroup>
+        <Label>Email:</Label>
+        <Input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+      </FormGroup>
+      <FormGroup>
+        <Label>Password:</Label>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        />
+      </FormGroup>
+      <Button type="submit">Login</Button>
+    </Form>
+  </Container>
   );
 }
 

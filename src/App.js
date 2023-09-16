@@ -1,4 +1,4 @@
-// import './App.css';
+import './App.css';
 import Sidebar from './components/Sidebar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Make sure to import BrowserRouter, Routes, and Route
 import AddProductCategory from './pages/AddProductCategory';
@@ -19,7 +19,7 @@ function App() {
       {/* <Sidebar /> */}
       <Routes>
         {/*Statistics */}
-        <Route path='/' element={<Splash />} />      
+        <Route path='/' element={<Login />} />      
         <Route path='/statistics' element={<><Sidebar /><Statistics /></>} />
         {/*Products */}
         <Route path='/products' element={<><Sidebar /><Products /></>} />
