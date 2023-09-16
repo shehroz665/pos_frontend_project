@@ -22,6 +22,9 @@ const handleSubmit = async (e) => {
         },
       });
       console.log('responseData', response.data);
+      const token = response.data.data.token;
+      console.log('token',token);
+      localStorage.setItem('token', token);
       if (response.status === 200) {
           showSuccessAlert('Login successful');
           navigate('/statistics');

@@ -22,7 +22,7 @@ const Sidebar = () => {
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
-        <SidebarNav sidebar={true}>
+        <SidebarNav sidebar={"true"}>
           <div className='sidebar-wrap'>
             {SidebarData.map((item, index) => {
               return <SubMenu item={item} key={index} />;

@@ -1,4 +1,4 @@
-import './App.css';
+// import './App.css';
 import Sidebar from './components/Sidebar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Make sure to import BrowserRouter, Routes, and Route
 import AddProductCategory from './pages/AddProductCategory';

@@ -1,9 +1,10 @@
 import React from 'react'
 
 const Statistics = () => {
+  const token = localStorage.getItem('token');
   return (
-    <div className='home'>
-    Statistics  
+    <div className='hello'>
+      hello {token}
     </div>
   )
 }
