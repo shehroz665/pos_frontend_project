@@ -2,7 +2,7 @@ import React from 'react'
 
 const Logout = () => {
   return (
-    <div style={{display:'flex',flexDirection:'row',paddingLeft:250}}>
+    <div className='home'>
     Logout  1111111111111111111111111111111111111111111111
     </div>
   )
