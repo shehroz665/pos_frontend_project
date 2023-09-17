@@ -11,6 +11,16 @@
     table-layout: fixed;
   }
   
+  .centered{
+    text-align: center;
+  }
+  .status-active {
+    color: green;
+  }
+  
+  .status-deactivated {
+    color: rgb(206, 32, 32);
+  }
   th, td {
     border: 1px solid #ccc;
     padding: 10px;
