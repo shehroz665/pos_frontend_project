@@ -12,6 +12,7 @@ import Products from './pages/Product/Products';
 
 import Suppliers from './pages/Suppliers/Suppliers'
 import AddSupplier from './pages/Suppliers/AddSupplier';
+import AchiveSupplier from './pages/Suppliers/AchiveSupplier';
 
 import Statistics from './pages/Statistics/Statistics';
 
@@ -44,6 +45,7 @@ function App() {
         {/*Suppliers */}
         <Route path='/suppliers' element={<><Sidebar /><Suppliers /></>} />
         <Route path='/supplier/add' element={<><Sidebar /><AddSupplier /></>} />
+        <Route path='/supplier/archive' element={<><Sidebar /><AchiveSupplier /></>} />
 
         <Route path='/sales' element={<><Sidebar /><Sales /></>} />
         <Route path='/settings' element={<><Sidebar /><Settings /></>} />

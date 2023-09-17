@@ -67,6 +67,12 @@ export const SidebarData = [
         icon: <BsIcons.BsPersonAdd />,
         cName: 'sub-nav'
       },
+      {
+        title: 'Archive Supplier',
+        path: '/supplier/archive',
+        icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
+        cName: 'sub-nav'
+      },
     ]
   },
   {

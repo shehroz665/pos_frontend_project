@@ -1,20 +1,19 @@
 import React,{useState,useEffect} from 'react'
-import "../ProductCategory/AddProductCategory.css"
+import "../ProductCategory/ProductCategory.css"
 import Banner from '../Banner';
 import axios from 'axios';
 import * as MdIcons from 'react-icons/md';
-import * as LiaIcons from 'react-icons/lia';
+import * as TbIcons from 'react-icons/tb';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
-import Switch from 'react-switch';
 
-const Suppliers = () => {
+const AchiveSupplier = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
-  const [token, settoken] = useState(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/supplier';
+    const apiUrl = 'http://127.0.0.1:8000/api/supplier/archive';
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,15 +22,19 @@ const Suppliers = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data)
+        console.log(response.data.data.data.length)
         setCategory(response.data.data.data);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi]);
-  const handleDelete = async (id) => {
-    const apiUrl = `http://127.0.0.1:8000/api/supplier/destory/${id}`;
+  }, [recallApi,token]);
+  const restoreOrDelete = async(id,status)=> {
+    console.log('id',id,'status',status)
+    const apiUrl = `http://127.0.0.1:8000/api/supplier/restoreOrDelete/${id}`;
+    const data = {
+      status:status
+    };
     const configs = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -39,44 +42,25 @@ const Suppliers = () => {
       },
     };
     try {
-      const response = await axios.delete(apiUrl, configs);
-      console.log('Supplier deleted:', response.data);
-      showSuccessAlert('Supplier deleted successfully');
+      const response = await axios.post(apiUrl,data, configs);
+      if(status===1){
+        showSuccessAlert('Supplier restored successfully');
+      }
+      else{
+        showSuccessAlert('Supplier deleted successfully');
+      }
       setrecallApi((prev) => !prev);
+      navigate('/suppliers');
     } catch (error) {
-      console.error('Error deleting Supplier:', error);
+      console.error('Error updating Supplier restore or delete:', error);
       showErrorAlert(error.message);
     }
-  };
-  const edit=(id)=> {
-    console.log('edit',id);
-    const propsToPass = {
-      id: id,
-    };
-    navigate('/productcategory/update', { state: propsToPass });
   }
-  const handleSwitchToggle = async(id) => {
-    console.log('index',id,'token',token)
-    const apiUrl = `http://127.0.0.1:8000/api/supplier/changeStatus/${id}`;
-    const configs = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-    try {
-      const response = await axios.post(apiUrl, [],configs);
-      showSuccessAlert('Supplier status updated successfully');
-      setrecallApi((prev) => !prev);
-    } catch (error) {
-      console.error('Error updating Supplier status:', error);
-      showErrorAlert(error.message);
-    }
-  };
+
   
   return (
     <>
-    <Banner title={"View Suppliers"}/>
+    <Banner title={"Archive Product Category"}/>
     <div className='home'>
       <div className='table-container'>
         <table>
@@ -102,20 +86,12 @@ const Suppliers = () => {
                 <td className='centered'>{sup.sup_contact}</td>
                 <td className='centered'>{sup.sup_description? sup.sup_description : "-"}</td>
                 <td className={`centered ${sup.status === 1 ? 'status-active' : 'status-deactivated'}`}>
-                  {sup.status === 1 ? "Active" : "Deactivated"}
+                  {"Deleted"}
                 </td>
                 <td className='centered'>
                   <>
-                  <LiaIcons.LiaEdit onClick={()=> edit(sup.sup_id)} size={24} color='black'/>
-                  <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>handleDelete(sup.sup_id)}/>
-                  <Switch
-                    width={42}
-                    height={20}
-                    onChange={() => handleSwitchToggle(sup.sup_id)}
-                    checked={sup.status==1 ? true : false}
-                    offColor="#CE2020"
-                    onColor="#008000"
-                  />
+                  <TbIcons.TbRestore onClick={()=> restoreOrDelete(sup.sup_id,1)} size={21} color='#008000'/>
+                  <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>restoreOrDelete(sup.sup_id,3)}/>
                   </></td>
               </tr>
             )))   } 
@@ -129,5 +105,5 @@ const Suppliers = () => {
   )
 }
 
-export default Suppliers
+export default AchiveSupplier
 

@@ -35,7 +35,7 @@
     margin-bottom: 5px;
   }
   
-  input {
+  input,textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;

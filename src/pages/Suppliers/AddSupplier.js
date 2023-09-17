@@ -12,7 +12,6 @@ const AddSupplier = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Category Name:', supplierName,supplierContact,supplierDescription);
     const apiUrl = 'http://127.0.0.1:8000/api/supplier/add';
     const config = {
       headers: {
@@ -38,7 +37,7 @@ const AddSupplier = () => {
       setSupplierName('');
       setsupplierContact('');
       setsupplierDescription('');
-    // navigate('/suppliers');
+     navigate('/suppliers');
   };
   return (
     <>
@@ -71,13 +70,12 @@ const AddSupplier = () => {
           </div>
           <div className='form-group-div'>
           <label htmlFor="supplierDescription">Supplier Description:</label>
-          <input
+          <textarea
             type="text"
             id="supplierDescription"
             name="supplierDescription"
             value={supplierDescription}
             onChange={(e) => setsupplierDescription(e.target.value)}
-            required
           />
           </div>
         </div>
