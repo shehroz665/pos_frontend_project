@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import "./ProductCategory.css"
-import Banner from './Banner';
+import Banner from '../Banner';
 import axios from 'axios';
 import * as MdIcons from 'react-icons/md';
 import * as LiaIcons from 'react-icons/lia';
-import { showSuccessAlert,showErrorAlert } from './Alerts/Alert';
+import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 
 const ProductCategory = () => {

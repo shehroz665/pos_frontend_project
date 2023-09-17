@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import "./AddProductCategory.css"
 import axios from 'axios';
-import { showSuccessAlert,showErrorAlert } from './Alerts/Alert';
+import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
-import Banner from './Banner';
+import Banner from '../Banner';
 const AddProductCategory = () => {
   const [categoryName, setCategoryName] = useState('');
   const token = localStorage.getItem('token');

@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import "./AddProductCategory.css"
 import axios from 'axios';
-import { showSuccessAlert,showErrorAlert } from './Alerts/Alert';
+import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
-import Banner from './Banner';
+import Banner from '../Banner';
 import { useLocation } from 'react-router-dom';
 const UpdateProductCategory = () => {
     const location = useLocation();

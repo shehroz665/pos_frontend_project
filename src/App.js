@@ -1,19 +1,29 @@
 import './App.css';
 import Sidebar from './components/Sidebar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Make sure to import BrowserRouter, Routes, and Route
-import AddProductCategory from './pages/AddProductCategory';
-import ProductCategory from './pages/ProductCategory';
-import AddProduct from './pages/AddProduct';
-import Products from './pages/Products';
-import Suppliers from './pages/Suppliers';
-import AddSupplier from './pages/AddSupplier';
-import Statistics from './pages/Statistics';
-import Sales from './pages/Sales';
-import Logout from './pages/Logout';
-import Settings from './pages/Settings';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+
+import AddProductCategory from './pages/ProductCategory/AddProductCategory';
+import ProductCategory from './pages/ProductCategory/ProductCategory';
+import UpdateProductCategory from './pages/ProductCategory/UpdateProductCategory';
+
+import AddProduct from './pages/Product/AddProduct';
+import Products from './pages/Product/Products';
+
+import Suppliers from './pages/Suppliers/Suppliers'
+import AddSupplier from './pages/Suppliers/AddSupplier';
+
+import Statistics from './pages/Statistics/Statistics';
+
+import Sales from './pages/Sale/Sales';
+
+
+import Settings from './pages/Setting/Settings';
+
 import Login from './pages/Login';
+import Logout from './pages/Logout';
+
 import Splash from './pages/Auth/Splash';
-import UpdateProductCategory from './pages/UpdateProductCategory';
+
 function App() {
   return (
     <Router>
