@@ -13,6 +13,7 @@ import Logout from './pages/Logout';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Splash from './pages/Auth/Splash';
+import UpdateProductCategory from './pages/UpdateProductCategory';
 function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ function App() {
         {/*Product Category */}
         <Route path='/productcategory' element={<><Sidebar /><ProductCategory /></>} />
         <Route path='/productcategory/add' element={<><Sidebar /><AddProductCategory /></>} />
+        <Route path='/productcategory/update' element={<><Sidebar /><UpdateProductCategory /></>} />
         {/*Suppliers */}
         <Route path='/suppliers' element={<><Sidebar /><Suppliers /></>} />
         <Route path='/supplier/add' element={<><Sidebar /><AddSupplier /></>} />

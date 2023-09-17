@@ -5,7 +5,10 @@ import axios from 'axios';
 import * as MdIcons from 'react-icons/md';
 import * as LiaIcons from 'react-icons/lia';
 import { showSuccessAlert,showErrorAlert } from './Alerts/Alert';
+import { useNavigate } from 'react-router-dom';
+
 const ProductCategory = () => {
+  const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false)
   const [token, settoken] = useState(localStorage.getItem('token'));
@@ -44,6 +47,13 @@ const ProductCategory = () => {
       showErrorAlert(error.message);
     }
   };
+  const edit=(id)=> {
+    console.log('edit',id);
+    const propsToPass = {
+      id: id,
+    };
+    navigate('/productcategory/update', { state: propsToPass });
+  }
   
   
   return (
@@ -72,7 +82,7 @@ const ProductCategory = () => {
                 <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {cat.status === 1 ? "Active" : "Deactivated"}
                 </td>
-                <td className='centered'><><LiaIcons.LiaEdit size={24} color='green'/><MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>handleDelete(cat.cat_id)}/></></td>
+                <td className='centered'><><LiaIcons.LiaEdit onClick={()=> edit(cat.cat_id)} size={24} color='black'/><MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>handleDelete(cat.cat_id)}/></></td>
               </tr>
             )))   } 
           </tbody>
