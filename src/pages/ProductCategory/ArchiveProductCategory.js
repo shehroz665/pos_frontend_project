@@ -4,17 +4,18 @@ import Banner from '../Banner';
 import axios from 'axios';
 import * as MdIcons from 'react-icons/md';
 import * as LiaIcons from 'react-icons/lia';
+import * as TbIcons from 'react-icons/tb';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
 
-const ProductCategory = () => {
+const ArchiveProductCategory = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
   const [token, settoken] = useState(localStorage.getItem('token'));
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/productcategory';
+    const apiUrl = 'http://127.0.0.1:8000/api/productcategory/archive';
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,29 +56,14 @@ const ProductCategory = () => {
     };
     navigate('/productcategory/update', { state: propsToPass });
   }
-  const handleSwitchToggle = async(id) => {
-    console.log('index',id,'token',token)
-    const apiUrl = `http://127.0.0.1:8000/api/productcategory/changeStatus/${id}`;
-    const configs = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-    try {
-      const response = await axios.post(apiUrl, [],configs);
-      console.log('Product category deleted:', response.data);
-      showSuccessAlert('Product category status updated successfully');
-      setrecallApi((prev) => !prev);
-    } catch (error) {
-      console.error('Error updating product category status:', error);
-      showErrorAlert(error.message);
-    }
-  };
+  const restoreOrDelete = (id,status)=> {
+    console.log('id',id,'status',status)
+  }
+
   
   return (
     <>
-    <Banner title={"View Product Category"}/>
+    <Banner title={"Archive Product Category"}/>
     <div className='home'>
       <div className='table-container'>
         <table>
@@ -99,20 +85,12 @@ const ProductCategory = () => {
                 <td>{cat.cat_id}</td>
                 <td className='centered'>{cat.cat_name}</td>
                 <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
-                  {cat.status === 1 ? "Active" : "Deactivated"}
+                  {"Deleted"}
                 </td>
                 <td className='centered'>
                   <>
-                  <LiaIcons.LiaEdit onClick={()=> edit(cat.cat_id)} size={24} color='black'/>
-                  <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>handleDelete(cat.cat_id)}/>
-                  <Switch
-                    width={42}
-                    height={20}
-                    onChange={() => handleSwitchToggle(cat.cat_id)}
-                    checked={cat.status==1 ? true : false}
-                    offColor="#CE2020"
-                    onColor="#008000"
-                  />
+                  <TbIcons.TbRestore onClick={()=> restoreOrDelete(cat.cat_id,1)} size={21} color='#008000'/>
+                  <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>restoreOrDelete(cat.cat_id,3)}/>
                   </></td>
               </tr>
             )))   } 
@@ -126,4 +104,4 @@ const ProductCategory = () => {
   )
 }
 
-export default ProductCategory
+export default ArchiveProductCategory

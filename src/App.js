@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddProductCategory from './pages/ProductCategory/AddProductCategory';
 import ProductCategory from './pages/ProductCategory/ProductCategory';
 import UpdateProductCategory from './pages/ProductCategory/UpdateProductCategory';
+import ArchiveProductCategory from './pages/ProductCategory/ArchiveProductCategory';
 
 import AddProduct from './pages/Product/AddProduct';
 import Products from './pages/Product/Products';
@@ -39,6 +40,7 @@ function App() {
         <Route path='/productcategory' element={<><Sidebar /><ProductCategory /></>} />
         <Route path='/productcategory/add' element={<><Sidebar /><AddProductCategory /></>} />
         <Route path='/productcategory/update' element={<><Sidebar /><UpdateProductCategory /></>} />
+        <Route path='/productcategory/archive' element={<><Sidebar /><ArchiveProductCategory /></>} />
         {/*Suppliers */}
         <Route path='/suppliers' element={<><Sidebar /><Suppliers /></>} />
         <Route path='/supplier/add' element={<><Sidebar /><AddSupplier /></>} />

@@ -8,6 +8,7 @@ import * as BiIcons from 'react-icons/bi';
 import * as BsIcons from 'react-icons/bs';
 import * as GoIcons from 'react-icons/go';
 import * as Fa6Icons from 'react-icons/fa6';
+import * as Hi2Icons from 'react-icons/hi2';
 export const SidebarData = [
   {
     title: 'Statistics',
@@ -40,6 +41,12 @@ export const SidebarData = [
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
     subNav: [
+      {
+        title: 'Archive Category',
+        path: '/productcategory/archive',
+        icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
+        cName: 'sub-nav'
+      },
       {
         title: 'Add Category',
         path: '/productcategory/add',
