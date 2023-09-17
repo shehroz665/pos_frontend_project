@@ -3,17 +3,15 @@ import "./ProductCategory.css"
 import Banner from '../Banner';
 import axios from 'axios';
 import * as MdIcons from 'react-icons/md';
-import * as LiaIcons from 'react-icons/lia';
 import * as TbIcons from 'react-icons/tb';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
-import Switch from 'react-switch';
 
 const ArchiveProductCategory = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
-  const [token, settoken] = useState(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
   useEffect(() => {
     const apiUrl = 'http://127.0.0.1:8000/api/productcategory/archive';
     const config = {
@@ -30,9 +28,13 @@ const ArchiveProductCategory = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi]);
-  const handleDelete = async (id) => {
-    const apiUrl = `http://127.0.0.1:8000/api/productcategory/destory/${id}`;
+  }, [recallApi,token]);
+  const restoreOrDelete = async(id,status)=> {
+    console.log('id',id,'status',status)
+    const apiUrl = `http://127.0.0.1:8000/api/productcategory/restoreOrDelete/${id}`;
+    const data = {
+      status:status
+    };
     const configs = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,24 +42,21 @@ const ArchiveProductCategory = () => {
       },
     };
     try {
-      const response = await axios.delete(apiUrl, configs);
+      const response = await axios.post(apiUrl,data, configs);
       console.log('Product category deleted:', response.data);
-      showSuccessAlert('Product category deleted successfully');
+      if(status===1){
+        showSuccessAlert('Product category restored successfully');
+      }
+      else{
+        showSuccessAlert('Product category deleted successfully');
+      }
+
       setrecallApi((prev) => !prev);
+      navigate('/productcategory');
     } catch (error) {
       console.error('Error deleting product category:', error);
       showErrorAlert(error.message);
     }
-  };
-  const edit=(id)=> {
-    console.log('edit',id);
-    const propsToPass = {
-      id: id,
-    };
-    navigate('/productcategory/update', { state: propsToPass });
-  }
-  const restoreOrDelete = (id,status)=> {
-    console.log('id',id,'status',status)
   }
 
   

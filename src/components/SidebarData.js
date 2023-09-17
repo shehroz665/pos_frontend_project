@@ -42,15 +42,15 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: 'Archive Category',
-        path: '/productcategory/archive',
-        icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
-        cName: 'sub-nav'
-      },
-      {
         title: 'Add Category',
         path: '/productcategory/add',
         icon: <BiIcons.BiPlus />,
+        cName: 'sub-nav'
+      },
+      {
+        title: 'Archive Category',
+        path: '/productcategory/archive',
+        icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
         cName: 'sub-nav'
       },
     ]
