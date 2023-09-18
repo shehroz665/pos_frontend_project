@@ -92,7 +92,7 @@ const Suppliers = () => {
           </thead>
           <tbody>
            {category.length===0? <tr>
-      <td colSpan="4" className="centered">
+      <td colSpan="6" className="centered">
         No records found
       </td>
     </tr>  :(category.map((sup) => (
