@@ -45,7 +45,7 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    const apiUrl = 'http://127.0.0.1:8000/api/supplier/add';
+    const apiUrl = 'http://127.0.0.1:8000/api/product/add';
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -53,19 +53,23 @@ const AddProduct = () => {
       },
     };
     const data = {
-  
+      prod_name:productName,
+      prod_sup_id:selectedSupplier,
+      prod_cat_id:selectedCategory,
+      prod_cost:productCost,
+      prod_selling_price:productSellingPrice
     };
     axios
       .post(apiUrl, data, config)
       .then((response) => {
         console.log('API Response:', response.data);
-        showSuccessAlert('Supplier added successfully')
+        showSuccessAlert('Product added successfully')
       })
       .catch((error) => {
         console.error('API Error:', error);
         showErrorAlert(error.message)
       });
-    navigate('/suppliers');
+    // navigate('/suppliers');
   };
   return (
     <>
