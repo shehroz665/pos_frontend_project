@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import "../ProductCategory/AddProductCategory.css"
 import axios from 'axios';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
@@ -9,8 +9,34 @@ const AddProduct = () => {
   const [productSellingPrice, setproductSellingPrice] = useState(0);
   const [selectedSupplier, setselectedSupplier] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [supplierArray, setsupplierArray] = useState([]);
+  const [categoryArray, setcategoryArray] = useState([])
   const [productName, setproductName] = useState('');
   const token = localStorage.getItem('token');
+  useEffect(()=>{
+    getDataFromApi();
+  },[token])
+  const getDataFromApi = async () => {
+    try {
+      const apiUrl = 'http://127.0.0.1:8000/api/product/dropdown';
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };   
+      const response = await axios.get(apiUrl, config);
+      if (response.status === 200) {
+        const responseData = response.data.data;
+        setsupplierArray(responseData.suppliers);
+        setcategoryArray(responseData.category);
+      } else {
+        console.error('Unexpected response status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching product data:', error);
+    }
+  };
   const dummyCategories = [
     { id: 1, name: 'Category 1' },
     { id: 2, name: 'Category 2' },
@@ -67,9 +93,9 @@ const AddProduct = () => {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 required
               >
-                {dummyCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
+                {categoryArray.map((category) => (
+                  <option key={category.cat_id} value={category.cat_id}>
+                    {category.cat_name}
                   </option>
                 ))}
               </select>
@@ -83,9 +109,9 @@ const AddProduct = () => {
                 onChange={(e) => setselectedSupplier(e.target.value)}
                 required
               >
-                {dummyCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
+                {supplierArray.map((sup) => (
+                  <option key={sup.sup_id} value={sup.sup_id}>
+                    {sup.sup_name}
                   </option>
                 ))}
               </select>
