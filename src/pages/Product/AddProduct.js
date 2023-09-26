@@ -1,10 +1,127 @@
-import React from 'react'
-
+import React, { useState } from 'react';
+import "../ProductCategory/AddProductCategory.css"
+import axios from 'axios';
+import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
+import { useNavigate } from 'react-router-dom';
+import Banner from '../Banner';
 const AddProduct = () => {
+  const [productCost, setproductCost] = useState(0);
+  const [productSellingPrice, setproductSellingPrice] = useState(0);
+  const [selectedSupplier, setselectedSupplier] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [productName, setproductName] = useState('');
+  const token = localStorage.getItem('token');
+  const dummyCategories = [
+    { id: 1, name: 'Category 1' },
+    { id: 2, name: 'Category 2' },
+    { id: 3, name: 'Category 3' },
+  ];
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const apiUrl = 'http://127.0.0.1:8000/api/supplier/add';
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const data = {
+  
+    };
+    axios
+      .post(apiUrl, data, config)
+      .then((response) => {
+        console.log('API Response:', response.data);
+        showSuccessAlert('Supplier added successfully')
+      })
+      .catch((error) => {
+        console.error('API Error:', error);
+        showErrorAlert(error.message)
+      });
+    navigate('/suppliers');
+  };
   return (
-    <div className='home'>
-      AddProduct
-    </div>
+    <>
+      <Banner title={"Add Product"} />
+      <div className="home">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <div className='form-group-div'>
+              <label htmlFor="productName">Product Name:</label>
+              <input
+                type="text"
+                id="productName"
+                name="productName"
+                value={productName}
+                onChange={(e) => setproductName(e.target.value)}
+                required
+              />
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="category">Product Category:</label>
+              <select
+                id="category"
+                name="category"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                required
+              >
+                {dummyCategories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="supplier">Product Supplier:</label>
+              <select
+                id="supplier"
+                name="supplier"
+                value={selectedSupplier}
+                onChange={(e) => setselectedSupplier(e.target.value)}
+                required
+              >
+                {dummyCategories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="productCost">Product Cost: {selectedCategory}</label>
+              <input
+                type="text"
+                id="productCost"
+                name="productCost"
+                maxLength={10}
+                minLength={2}
+                value={productCost}
+                onChange={(e) => setproductCost(e.target.value)}
+                required
+              />
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="productSellingPrice">Product Selling Price:</label>
+              <input
+                type="text"
+                id="productSellingPrice"
+                name="productSellingPrice"
+                maxLength={10}
+                minLength={2}
+                value={productSellingPrice}
+                onChange={(e) => setproductSellingPrice(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
+      </div>
+    </>
+
   )
 }
 
