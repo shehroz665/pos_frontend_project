@@ -14,11 +14,6 @@ const Products = () => {
   const [recallApi, setrecallApi] = useState(false);
   const token = localStorage.getItem('token');
   const [costVisible, setCostVisible] = useState([]);
-  const toggleCostVisibility = (index) => {
-    const updatedVisibility = [...costVisible];
-    updatedVisibility[index] = !updatedVisibility[index];
-    setCostVisible(updatedVisibility);
-  };
   useEffect(() => {
     const apiUrl = 'http://127.0.0.1:8000/api/product';
     const config = {
@@ -40,6 +35,11 @@ const Products = () => {
         console.error('Error fetching product data:', error);
       });
   }, [recallApi,token]);
+  const toggleCostVisibility = (index) => {
+    const updatedVisibility = [...costVisible];
+    updatedVisibility[index] = !updatedVisibility[index];
+    setCostVisible(updatedVisibility);
+  };
   const handleDelete = async (id) => {
     const apiUrl = `http://127.0.0.1:8000/api/product/destory/${id}`;
     const configs = {
@@ -110,9 +110,9 @@ const Products = () => {
               <tr key={prod.prod_id}>
                 <td>{prod.prod_id}</td>
                 <td className='centered'>{prod.prod_name}</td>
-                <td className='centered'>{prod.prod_cat_id}</td>
-                <td className='centered'>{prod.prod_sup_id}</td>
-                <td className='centered'>{costVisible[index]?  parseFloat(prod.prod_cost).toFixed(0): '**'}</td>
+                <td className='centered'>{prod.cat_name}</td>
+                <td className='centered'>{prod.sup_name}</td>
+                <td className='centered'>{costVisible[index]?  parseFloat(prod.prod_cost).toFixed(0): '*'.repeat(parseFloat(prod.prod_cost).toFixed(0).length)}</td>
                 <td className='centered'>{parseFloat(prod.prod_selling_price).toFixed(0)}</td>
                 <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {prod.status === 1 ? "Active" : "Deactivated"}
