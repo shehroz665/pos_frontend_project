@@ -103,7 +103,7 @@ const Products = () => {
           </thead>
           <tbody>
            {products.length===0? <tr>
-      <td colSpan="4" className="centered">
+      <td colSpan="8" className="centered">
         No records found
       </td>
     </tr>  :(products.map((prod,index) => (

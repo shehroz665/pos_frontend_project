@@ -9,6 +9,7 @@ import ArchiveProductCategory from './pages/ProductCategory/ArchiveProductCatego
 
 import AddProduct from './pages/Product/AddProduct';
 import Products from './pages/Product/Products';
+import ArchiveProducts from './pages/Product/ArchiveProducts';
 
 import Suppliers from './pages/Suppliers/Suppliers'
 import AddSupplier from './pages/Suppliers/AddSupplier';
@@ -38,6 +39,7 @@ function App() {
         {/*Products */}
         <Route path='/products' element={<><Sidebar /><Products /></>} />
         <Route path='/product/add' element={<><Sidebar /><AddProduct /></>} />
+        <Route path='/product/archive' element={<><Sidebar /><ArchiveProducts /></>} />
         {/*Product Category */}
         <Route path='/productcategory' element={<><Sidebar /><ProductCategory /></>} />
         <Route path='/productcategory/add' element={<><Sidebar /><AddProductCategory /></>} />

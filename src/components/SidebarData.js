@@ -29,6 +29,12 @@ export const SidebarData = [
         icon:  <BsIcons.BsCartPlus />,
         cName: 'sub-nav'
       },
+      {
+        title: 'Archive Product',
+        path: '/product/archive',
+        icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
+        cName: 'sub-nav'
+      },
     ]
   },
   {
