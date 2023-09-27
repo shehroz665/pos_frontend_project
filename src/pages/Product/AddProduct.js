@@ -30,6 +30,9 @@ const AddProduct = () => {
         const responseData = response.data.data;
         setsupplierArray(responseData.suppliers);
         setcategoryArray(responseData.category);
+        console.log('sup_id-> ',responseData.suppliers[0].sup_id,'cat_id-> ',responseData.category[0].cat_id);
+        setselectedSupplier(responseData.suppliers[0].sup_id);
+        setSelectedCategory(responseData.category[0].cat_id);
       } else {
         console.error('Unexpected response status:', response.status);
       }
@@ -37,11 +40,6 @@ const AddProduct = () => {
       console.error('Error fetching product data:', error);
     }
   };
-  const dummyCategories = [
-    { id: 1, name: 'Category 1' },
-    { id: 2, name: 'Category 2' },
-    { id: 3, name: 'Category 3' },
-  ];
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,13 +61,17 @@ const AddProduct = () => {
       .post(apiUrl, data, config)
       .then((response) => {
         console.log('API Response:', response.data);
-        showSuccessAlert('Product added successfully')
+        showSuccessAlert('Product added successfully');
+        setproductName('');
+        setproductCost(0);
+        setproductSellingPrice(0);
+        navigate('/products');
       })
       .catch((error) => {
         console.error('API Error:', error);
         showErrorAlert(error.message)
       });
-    // navigate('/suppliers');
+ 
   };
   return (
     <>
@@ -121,7 +123,7 @@ const AddProduct = () => {
               </select>
             </div>
             <div className='form-group-div'>
-              <label htmlFor="productCost">Product Cost: {selectedCategory}</label>
+              <label htmlFor="productCost">Product Cost:</label>
               <input
                 type="text"
                 id="productCost"
