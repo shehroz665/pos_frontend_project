@@ -7,6 +7,7 @@ import Banner from '../Banner';
 const AddProduct = () => {
   const [productCost, setproductCost] = useState(0);
   const [productSellingPrice, setproductSellingPrice] = useState(0);
+  const [productQuantity, setproductQuantity] = useState(0);
   const [selectedSupplier, setselectedSupplier] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [supplierArray, setsupplierArray] = useState([]);
@@ -55,17 +56,32 @@ const AddProduct = () => {
       prod_sup_id:selectedSupplier,
       prod_cat_id:selectedCategory,
       prod_cost:productCost,
-      prod_selling_price:productSellingPrice
+      prod_selling_price:productSellingPrice,
+      prod_quantity:productQuantity,
     };
+    if (productQuantity <= 0) {
+      showErrorAlert('Product quantity should be greater than zero');
+      return;
+    }
+    if (productCost <= 0) {
+      showErrorAlert('Product cost should not be zero');
+      return;
+    }
+    if (productSellingPrice <= 0) {
+      showErrorAlert('Product selling price should not be zero');
+      return;
+    }
+
     axios
       .post(apiUrl, data, config)
       .then((response) => {
         console.log('API Response:', response.data);
-        showSuccessAlert('Product added successfully');
-        setproductName('');
-        setproductCost(0);
-        setproductSellingPrice(0);
-        navigate('/products');
+          showSuccessAlert('Product added successfully');
+          setproductName('');
+          setproductCost(0);
+          setproductSellingPrice(0);
+          setproductQuantity(0);
+          navigate('/products');
       })
       .catch((error) => {
         console.error('API Error:', error);
@@ -87,6 +103,17 @@ const AddProduct = () => {
                 name="productName"
                 value={productName}
                 onChange={(e) => setproductName(e.target.value)}
+                required
+              />
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="productQuantity">Product Quantity:</label>
+              <input
+                type="text"
+                id="productQuantity"
+                name="productQuantity"
+                value={productQuantity}
+                onChange={(e) => setproductQuantity(e.target.value)}
                 required
               />
             </div>

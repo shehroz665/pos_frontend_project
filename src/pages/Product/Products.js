@@ -96,14 +96,15 @@ const Products = () => {
               <th className='centered'>Category</th>
               <th className='centered'>Supplier</th> 
               <th className='centered'>Cost</th> 
-              <th className='centered'>Selling Price</th>         
+              <th className='centered'>Selling Price</th> 
+              <th className='centered'>Quantity</th>              
               <th className='centered'>Status</th>
               <th className='centered'>Actions</th>
             </tr>
           </thead>
           <tbody>
            {products.length===0? <tr>
-      <td colSpan="8" className="centered">
+      <td colSpan="9" className="centered">
         No records found
       </td>
     </tr>  :(products.map((prod,index) => (
@@ -114,6 +115,7 @@ const Products = () => {
                 <td className='centered'>{prod.sup_name}</td>
                 <td className='centered'>{costVisible[index]?  parseFloat(prod.prod_cost).toFixed(0): '*'.repeat(parseFloat(prod.prod_cost).toFixed(0).length)}</td>
                 <td className='centered'>{parseFloat(prod.prod_selling_price).toFixed(0)}</td>
+                <td className='centered'>{parseFloat(prod.prod_quantity).toFixed(0)}</td>
                 <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {prod.status === 1 ? "Active" : "Deactivated"}
                 </td>
