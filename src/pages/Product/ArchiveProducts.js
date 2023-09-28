@@ -66,7 +66,7 @@ const ArchiveProducts = () => {
   };
   return (
     <>
-    <Banner title={"Archive Product Category"}/>
+    <Banner title={"Archive Product"}/>
     <div className='home'>
       <div className='table-container'>
         <table>
