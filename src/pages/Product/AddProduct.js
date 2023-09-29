@@ -10,8 +10,10 @@ const AddProduct = () => {
   const [productQuantity, setproductQuantity] = useState(0);
   const [selectedSupplier, setselectedSupplier] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedSize, setselectedSize] = useState('');
   const [supplierArray, setsupplierArray] = useState([]);
-  const [categoryArray, setcategoryArray] = useState([])
+  const [categoryArray, setcategoryArray] = useState([]);
+  const [sizeArray, setsizeArray] = useState([])
   const [productName, setproductName] = useState('');
   const token = localStorage.getItem('token');
   useEffect(()=>{
@@ -29,11 +31,14 @@ const AddProduct = () => {
       const response = await axios.get(apiUrl, config);
       if (response.status === 200) {
         const responseData = response.data.data;
+        console.log('dropdown->',responseData)
         setsupplierArray(responseData.suppliers);
         setcategoryArray(responseData.category);
+        setsizeArray(responseData.sizes);
         console.log('sup_id-> ',responseData.suppliers[0].sup_id,'cat_id-> ',responseData.category[0].cat_id);
         setselectedSupplier(responseData.suppliers[0].sup_id);
         setSelectedCategory(responseData.category[0].cat_id);
+        setselectedSize(responseData.sizes[0].size_id)
       } else {
         console.error('Unexpected response status:', response.status);
       }
@@ -145,6 +150,22 @@ const AddProduct = () => {
                 {supplierArray.map((sup) => (
                   <option key={sup.sup_id} value={sup.sup_id}>
                     {sup.sup_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className='form-group-div'>
+              <label htmlFor="productSize">Product Size:</label>
+              <select
+                id="productSize"
+                name="productSize"
+                value={selectedSize}
+                onChange={(e) => setselectedSize(e.target.value)}
+                required
+              >
+                {sizeArray.map((size) => (
+                  <option key={size.size_id} value={size.size_id}>
+                    {size.size_name}
                   </option>
                 ))}
               </select>

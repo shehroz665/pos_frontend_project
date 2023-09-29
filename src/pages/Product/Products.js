@@ -96,7 +96,8 @@ const Products = () => {
               <th className='centered'>Category</th>
               <th className='centered'>Supplier</th> 
               <th className='centered'>Cost</th> 
-              <th className='centered'>Selling Price</th> 
+              <th className='centered'>Selling Price</th>
+              <th className='centered'>Size</th> 
               <th className='centered'>Quantity</th>              
               <th className='centered'>Status</th>
               <th className='centered'>Actions</th>
@@ -104,7 +105,7 @@ const Products = () => {
           </thead>
           <tbody>
            {products.length===0? <tr>
-      <td colSpan="9" className="centered">
+      <td colSpan="10" className="centered">
         No records found
       </td>
     </tr>  :(products.map((prod,index) => (
@@ -115,12 +116,13 @@ const Products = () => {
                 <td className='centered'>{prod.sup_name}</td>
                 <td className='centered'>{costVisible[index]?  parseFloat(prod.prod_cost).toFixed(0): '*'.repeat(parseFloat(prod.prod_cost).toFixed(0).length)}</td>
                 <td className='centered'>{parseFloat(prod.prod_selling_price).toFixed(0)}</td>
+                <td className='centered'>{prod.size_name}</td>
                 <td className='centered'>{parseFloat(prod.prod_quantity).toFixed(0)}</td>
                 <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {prod.status === 1 ? "Active" : "Deactivated"}
                 </td>
                 <td className='centered'>
-                  <>
+                  <div style={{display:'flex',flexDirection:'row'}}>
                   <AiIcons.AiFillEyeInvisible onClick={()=>toggleCostVisibility(index)}  size={24} color='black'/>
                   <LiaIcons.LiaEdit onClick={()=> edit(prod.prod_id)} size={24} color='black'/>
                   <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>handleDelete(prod.prod_id)}/>
@@ -132,7 +134,7 @@ const Products = () => {
                     offColor="#CE2020"
                     onColor="#008000"
                   />
-                  </></td>
+                  </div></td>
               </tr>
             )))   } 
           </tbody>
