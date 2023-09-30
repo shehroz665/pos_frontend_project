@@ -10,6 +10,7 @@ import ArchiveProductCategory from './pages/ProductCategory/ArchiveProductCatego
 import AddProduct from './pages/Product/AddProduct';
 import Products from './pages/Product/Products';
 import ArchiveProducts from './pages/Product/ArchiveProducts';
+import UpdateProduct from './pages/Product/UpdateProduct';
 
 import Suppliers from './pages/Suppliers/Suppliers'
 import AddSupplier from './pages/Suppliers/AddSupplier';
@@ -26,7 +27,6 @@ import Settings from './pages/Setting/Settings';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 
-import Splash from './pages/Auth/Splash';
 
 function App() {
   return (
@@ -39,12 +39,14 @@ function App() {
         {/*Products */}
         <Route path='/products' element={<><Sidebar /><Products /></>} />
         <Route path='/product/add' element={<><Sidebar /><AddProduct /></>} />
+        <Route path='/product/update' element={<><Sidebar /><UpdateProduct /></>} />
         <Route path='/product/archive' element={<><Sidebar /><ArchiveProducts /></>} />
         {/*Product Category */}
         <Route path='/productcategory' element={<><Sidebar /><ProductCategory /></>} />
         <Route path='/productcategory/add' element={<><Sidebar /><AddProductCategory /></>} />
         <Route path='/productcategory/update' element={<><Sidebar /><UpdateProductCategory /></>} />
         <Route path='/productcategory/archive' element={<><Sidebar /><ArchiveProductCategory /></>} />
+
         {/*Suppliers */}
         <Route path='/suppliers' element={<><Sidebar /><Suppliers /></>} />
         <Route path='/supplier/add' element={<><Sidebar /><AddSupplier /></>} />

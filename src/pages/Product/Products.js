@@ -63,7 +63,7 @@ const Products = () => {
     const propsToPass = {
       id: id,
     };
-    navigate('/productcategory/update', { state: propsToPass });
+    navigate('/product/update', { state: propsToPass });
   }
   const handleSwitchToggle = async(id) => {
     console.log('index',id,'token',token)

@@ -63,6 +63,7 @@ const AddProduct = () => {
       prod_cost:productCost,
       prod_selling_price:productSellingPrice,
       prod_quantity:productQuantity,
+      prod_size_id:selectedSize,
     };
     if (productQuantity <= 0) {
       showErrorAlert('Product quantity should be greater than zero');
