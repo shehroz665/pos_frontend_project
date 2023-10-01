@@ -8,14 +8,20 @@ import * as AiIcons from 'react-icons/ai';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
+
 const Products = () => {
   const navigate = useNavigate();
   const [products, setproducts] = useState([])
   const [recallApi, setrecallApi] = useState(false);
   const token = localStorage.getItem('token');
   const [costVisible, setCostVisible] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, settotalPages] = useState(0);
+  const itemsPerPage = 10;
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/product';
+    const apiUrl = `http://127.0.0.1:8000/api/product?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -27,6 +33,7 @@ const Products = () => {
         console.log(response.data.data.data.length)
       
         setproducts(response.data.data.data);
+        settotalPages(response.data.data.last_page);
         console.log('products-> ',response.data.data.data);
         const initialVisibility = new Array(response.data.data.data.length).fill(false);
         setCostVisible(initialVisibility);
@@ -34,7 +41,7 @@ const Products = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi,token]);
+  }, [recallApi,currentPage,token]);
   const toggleCostVisibility = (index) => {
     const updatedVisibility = [...costVisible];
     updatedVisibility[index] = !updatedVisibility[index];
@@ -82,6 +89,9 @@ const Products = () => {
       console.error('Error updating product category status:', error);
       showErrorAlert(error.message);
     }
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
   return (
     <>
@@ -140,7 +150,11 @@ const Products = () => {
           </tbody>
         </table>
       </div>
-
+      <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
     </>
   )

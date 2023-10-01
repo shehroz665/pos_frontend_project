@@ -7,14 +7,20 @@ import * as TbIcons from 'react-icons/tb';
 import * as AiIcons from 'react-icons/ai';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
+
 const ArchiveProducts = () => {
   const navigate = useNavigate();
   const [products, setproducts] = useState([])
   const [costVisible, setCostVisible] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
   const token = localStorage.getItem('token');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, settotalPages] = useState(0);
+  const itemsPerPage = 10;
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/product/archive';
+    const apiUrl = `http://127.0.0.1:8000/api/product/archive?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,16 +29,17 @@ const ArchiveProducts = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data.length)
+        // console.log(response.data.data.data.length)
         setproducts(response.data.data.data);
-        console.log('archive-> ',response.data.data.data)
+        settotalPages(response.data.data.last_page);
+        // console.log('archive-> ',response.data.data.data)
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi,token]);
+  }, [recallApi,currentPage,token]);
   const restoreOrDelete = async(id,status)=> {
-    console.log('id',id,'status',status)
+    // console.log('id',id,'status',status)
     const apiUrl = `http://127.0.0.1:8000/api/product/restoreOrDelete/${id}`;
     const data = {
       status:status
@@ -58,11 +65,14 @@ const ArchiveProducts = () => {
       console.error('Error deleting product category:', error);
       showErrorAlert(error.message);
     }
-  }
+  };
   const toggleCostVisibility = (index) => {
     const updatedVisibility = [...costVisible];
     updatedVisibility[index] = !updatedVisibility[index];
     setCostVisible(updatedVisibility);
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
   return (
     <>
@@ -113,7 +123,11 @@ const ArchiveProducts = () => {
           </tbody>
         </table>
       </div>
-
+      <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
     </>
   )

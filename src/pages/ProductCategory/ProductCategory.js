@@ -7,14 +7,19 @@ import * as LiaIcons from 'react-icons/lia';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 
 const ProductCategory = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
-  const [token, settoken] = useState(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, settotalPages] = useState(0);
+  const itemsPerPage = 10;
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/productcategory';
+    const apiUrl = `http://127.0.0.1:8000/api/productcategory?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,13 +28,14 @@ const ProductCategory = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data.length)
+        // console.log(response.data.data.data.length)
         setCategory(response.data.data.data);
+        settotalPages(response.data.data.last_page);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi]);
+  }, [recallApi,currentPage,token]);
   const handleDelete = async (id) => {
     const apiUrl = `http://127.0.0.1:8000/api/productcategory/destory/${id}`;
     const configs = {
@@ -74,7 +80,9 @@ const ProductCategory = () => {
       showErrorAlert(error.message);
     }
   };
-  
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   return (
     <>
     <Banner title={"View Product Category"}/>
@@ -119,7 +127,11 @@ const ProductCategory = () => {
           </tbody>
         </table>
       </div>
-
+      <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
     </>
 

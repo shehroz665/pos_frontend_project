@@ -6,14 +6,20 @@ import * as MdIcons from 'react-icons/md';
 import * as TbIcons from 'react-icons/tb';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 
 const AchiveSupplier = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
   const token = localStorage.getItem('token');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, settotalPages] = useState(0);
+  const itemsPerPage = 10;
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/supplier/archive';
+    // const apiUrl = 'http://127.0.0.1:8000/api/supplier/archive';
+    const apiUrl = `http://127.0.0.1:8000/api/supplier/archive?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -22,13 +28,14 @@ const AchiveSupplier = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data.length)
+        // console.log(response.data.data.last_page);
         setCategory(response.data.data.data);
+        settotalPages(response.data.data.last_page);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi,token]);
+  }, [recallApi,currentPage,token]);
   const restoreOrDelete = async(id,status)=> {
     console.log('id',id,'status',status)
     const apiUrl = `http://127.0.0.1:8000/api/supplier/restoreOrDelete/${id}`;
@@ -55,8 +62,10 @@ const AchiveSupplier = () => {
       console.error('Error updating Supplier restore or delete:', error);
       showErrorAlert(error.message);
     }
-  }
-
+  };
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   
   return (
     <>
@@ -98,7 +107,11 @@ const AchiveSupplier = () => {
           </tbody>
         </table>
       </div>
-
+      <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
     </>
 
