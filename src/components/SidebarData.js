@@ -18,7 +18,7 @@ export const SidebarData = [
   {
     title: 'Products',
     path: '/products',
-    icon: <MdIcons.MdProductionQuantityLimits />,
+    icon: <RiIcons.RiProductHuntLine />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
 
@@ -26,7 +26,7 @@ export const SidebarData = [
       {
         title: 'Add Product',
         path: '/product/add',
-        icon:  <BsIcons.BsCartPlus />,
+        icon:  <BiIcons.BiPlus  />,
         cName: 'sub-nav'
       },
       {
@@ -80,6 +80,13 @@ export const SidebarData = [
         cName: 'sub-nav'
       },
     ]
+  },
+  {
+    title: 'Add To Cart',
+    path: '/addtocart',
+    icon: <BiIcons.BiCartDownload />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
   },
   {
     title: 'Sales',

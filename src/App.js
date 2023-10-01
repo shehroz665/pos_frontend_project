@@ -21,12 +21,12 @@ import Statistics from './pages/Statistics/Statistics';
 
 import Sales from './pages/Sale/Sales';
 
-
 import Settings from './pages/Setting/Settings';
 
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 
+import AddToCart from './pages/Cart/AddToCart';
 
 function App() {
   return (
@@ -53,6 +53,7 @@ function App() {
         <Route path='/supplier/update' element={<><Sidebar /><UpdateSupplier /></>} />
         <Route path='/supplier/archive' element={<><Sidebar /><AchiveSupplier /></>} />
 
+        <Route path='/addtocart' element={<><Sidebar /><AddToCart /></>} />
         <Route path='/sales' element={<><Sidebar /><Sales /></>} />
         <Route path='/settings' element={<><Sidebar /><Settings /></>} />
         <Route path='/logout' element={<><Sidebar /><Logout /></>} />
