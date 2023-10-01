@@ -57,4 +57,20 @@
   button:hover {
     background-color:  #022888;
   }
+  .add-to-cart-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .available-items,
+  .selected-items {
+    width: 48%; /* Equal space for both divs */
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .scrollable-items {
+    max-height: 300px; /* Set a max height for scrollable items */
+    overflow-y: scroll; /* Enable vertical scrolling if needed */
+  }
   
