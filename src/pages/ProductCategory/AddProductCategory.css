@@ -78,6 +78,7 @@
 
     overflow-y: scroll;
   }
-  
 
-   
+  .centered{
+    text-align: center;
+  }

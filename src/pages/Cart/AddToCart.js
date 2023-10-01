@@ -3,12 +3,13 @@ import "../ProductCategory/AddProductCategory.css";
 import axios from 'axios';
 import Banner from '../Banner';
 import * as AiIcons from 'react-icons/ai';
+import * as BsIcons from 'react-icons/bs';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
 const AddToCart = () => {
   const [availableItems, setAvailableItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const token = localStorage.getItem('token');
-
+  const [costVisible, setCostVisible] = useState([]);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
@@ -17,7 +18,11 @@ const AddToCart = () => {
       showErrorAlert("Item is already in the cart");
     }
   };
-
+  const toggleCostVisibility = (index) => {
+    const updatedVisibility = [...costVisible];
+    updatedVisibility[index] = !updatedVisibility[index];
+    setCostVisible(updatedVisibility);
+  };
   const incrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id) {
@@ -30,8 +35,7 @@ const AddToCart = () => {
       return selectedItem;
     });
     setSelectedItems(updatedSelectedItems);
-  };
-  
+  }; 
   const decrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id && selectedItem.quantity > 1) {
@@ -75,20 +79,25 @@ const AddToCart = () => {
                   <th>Product Name</th>
                   <th>Supplier</th>
                   <th>Category</th>
+                  <th>Cost</th>
                   <th>Quantity</th>                    
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {availableItems.map((item) => (
+                {availableItems.map((item,index) => (
                   <tr key={item.prod_id}>
                     <td>{item.prod_id}</td>
                     <td>{item.prod_name}</td>
                     <td>{item.sup_name}</td>
                     <td>{item.cat_name}</td>
+                    <td>{costVisible[index]?  parseFloat(item.prod_cost).toFixed(0): '*'.repeat(parseFloat(item.prod_cost).toFixed(0).length)}</td>
                     <td>{parseInt(item.prod_quantity)}</td>
-                    <td>
-                      <button onClick={() => addToCart(item)}>Add</button>
+                    <td >
+                      <div style={{display:'flex',flexDirection:'row',padding:'10px'}}>
+                      <BsIcons.BsCartPlusFill onClick={() => addToCart(item)} size={22} color={'#123bb7'}/>
+                      <AiIcons.AiFillEyeInvisible onClick={()=>toggleCostVisibility(index)}  size={24} color='black'/>
+                      </div>
                     </td>
                   </tr>
                 ))}
