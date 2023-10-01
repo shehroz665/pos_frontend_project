@@ -85,7 +85,7 @@ const AddToCart = () => {
       });
   }, [token, search]);
   useEffect(() => {
-    console.log('selected->',selectedItems)
+    console.log('selected->', selectedItems)
     setTotalProducts(selectedItems.length);
     setTotalPrice(selectedItems.reduce((total, item) => {
       return total + item.quantity * parseFloat(item.prod_selling_price);
@@ -167,12 +167,12 @@ const AddToCart = () => {
                       <td>{item.prod_name}</td>
                       <td>{item.quantity}</td>
                       <td>
-                      <input
-                      type="number"
-                      value={parseInt(item.prod_selling_price)}
-                      onChange={(e) => handlePriceChange(e, item)}
-                      min={item.prod_cost}
-                    /></td>
+                        <input
+                          type="number"
+                          value={parseInt(item.prod_selling_price)}
+                          onChange={(e) => handlePriceChange(e, item)}
+                          min={item.prod_cost}
+                        /></td>
                       <td>
                         <AiIcons.AiFillPlusCircle onClick={() => incrementQuantity(item)} size={24} color='green' />
                         <AiIcons.AiOutlineMinusCircle onClick={() => decrementQuantity(item)} size={24} color='rgb(255, 165, 0)' />
@@ -184,11 +184,18 @@ const AddToCart = () => {
               </table>
             </div>
             <div className='calculation'>
-              <p>Total Products: {totalProducts}</p>
-              <p>Total Quantity: {totalQuantity}</p>
-              <p>Total Price: Rs {parseInt(totalPrice)}</p>
-
+              <div className="calculation-text">
+                <p>Total Products:</p>
+                <p>Total Quantity:</p>
+                <p>Total Price:</p>
+              </div>
+              <div className="calculation-values">
+                <p>{totalProducts}</p>
+                <p>{totalQuantity}</p>
+                <p>Rs {parseInt(totalPrice)}</p>
+              </div>
             </div>
+
           </div>
 
         </div>

@@ -92,8 +92,23 @@
   .clear-button{
     background-color: rgb(206, 32, 32);
   }
-  .calculation{
+  .calculation {
+    display: flex;
+    justify-content: space-between;
     text-align: right;
     margin-top: 10px;
     padding: 5px;
+    background-color: rgb(234, 234, 234);
+    max-width: 200px;
+    border-radius: 5px;
+    margin-left: auto;
   }
+  
+  .calculation-text {
+    text-align: left;
+  }
+  
+  .calculation-values {
+    text-align: right;
+  }
+  
