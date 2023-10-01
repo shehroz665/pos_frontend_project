@@ -17,8 +17,9 @@ const Suppliers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, settotalPages] = useState(0);
   const itemsPerPage = 10;
+  const [search, setsearch] = useState('');
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/api/supplier?page=${currentPage}&per_page=${itemsPerPage}`;
+    const apiUrl = `http://127.0.0.1:8000/api/supplier?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ const Suppliers = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi,currentPage,token]);
+  }, [recallApi,currentPage,token,search]);
   const handleDelete = async (id) => {
     const apiUrl = `http://127.0.0.1:8000/api/supplier/destory/${id}`;
     const configs = {
@@ -86,6 +87,15 @@ const Suppliers = () => {
     <>
     <Banner title={"View Suppliers"}/>
     <div className='home'>
+    <div className='search-container'>
+          <input
+            type='text'
+            className='search-input'
+            placeholder='Search by name, contact'
+            value={search}
+            onChange={(e) => setsearch(e.target.value)}
+          />
+        </div>
       <div className='table-container'>
         <table>
           <thead>
