@@ -13,6 +13,9 @@ const AddToCart = () => {
   const token = localStorage.getItem('token');
   const [costVisible, setCostVisible] = useState([]);
   const [search, setsearch] = useState('');
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, settotalQuantity] = useState(0);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
@@ -52,6 +55,18 @@ const AddToCart = () => {
     const updatedSelectedItems = selectedItems.filter((selectedItem) => selectedItem.prod_id !== item.prod_id);
     setSelectedItems(updatedSelectedItems);
   };
+  const handlePriceChange = (event, item) => {
+    const updatedSelectedItems = selectedItems.map((selectedItem) => {
+      if (selectedItem.prod_id === item.prod_id) {
+        const newPrice = parseFloat(event.target.value);
+        if (!isNaN(newPrice)) {
+          return { ...selectedItem, prod_selling_price: newPrice };
+        }
+      }
+      return selectedItem;
+    });
+    setSelectedItems(updatedSelectedItems);
+  };
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
     const config = {
@@ -69,7 +84,16 @@ const AddToCart = () => {
         console.error('Error fetching product data:', error);
       });
   }, [token, search]);
-
+  useEffect(() => {
+    console.log('selected->',selectedItems)
+    setTotalProducts(selectedItems.length);
+    setTotalPrice(selectedItems.reduce((total, item) => {
+      return total + item.quantity * parseFloat(item.prod_selling_price);
+    }, 0));
+    settotalQuantity(selectedItems.reduce((total, item) => {
+      return total + item.quantity;
+    }, 0));
+  }, [selectedItems])
   return (
     <>
       <Banner title={"Add to Cart"} />
@@ -125,7 +149,7 @@ const AddToCart = () => {
           <div className="selected-items">
             <h2>Cart</h2>
             <div style={{ marginBottom: '10px' }}>
-            <button className='clear-button' onClick={()=>setSelectedItems([])}>Clear All</button>
+              <button className='clear-button' onClick={() => setSelectedItems([])}>Clear All</button>
             </div>
             <div className="scrollable-items">
               <table>
@@ -133,6 +157,7 @@ const AddToCart = () => {
                   <tr>
                     <th>Product Name</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -142,18 +167,32 @@ const AddToCart = () => {
                       <td>{item.prod_name}</td>
                       <td>{item.quantity}</td>
                       <td>
-                        <AiIcons.AiFillPlusCircle onClick={() => incrementQuantity(item)} size={24} color='green'/>
+                      <input
+                      type="number"
+                      value={parseInt(item.prod_selling_price)}
+                      onChange={(e) => handlePriceChange(e, item)}
+                      min={item.prod_cost}
+                    /></td>
+                      <td>
+                        <AiIcons.AiFillPlusCircle onClick={() => incrementQuantity(item)} size={24} color='green' />
                         <AiIcons.AiOutlineMinusCircle onClick={() => decrementQuantity(item)} size={24} color='rgb(255, 165, 0)' />
-                        <MdIcons.MdDelete onClick={() => clearItem(item)} size={24} color='rgb(206, 32, 32)'/>
+                        <MdIcons.MdDelete onClick={() => clearItem(item)} size={24} color='rgb(206, 32, 32)' />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+            <div className='calculation'>
+              <p>Total Products: {totalProducts}</p>
+              <p>Total Quantity: {totalQuantity}</p>
+              <p>Total Price: Rs {parseInt(totalPrice)}</p>
+
+            </div>
           </div>
 
         </div>
+
       </div>
     </>
   )
