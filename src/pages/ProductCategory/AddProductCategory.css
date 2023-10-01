@@ -60,17 +60,24 @@
   .add-to-cart-container {
     display: flex;
     justify-content: space-between;
+    width: 100%;
   }
   
   .available-items,
   .selected-items {
-    width: 48%; /* Equal space for both divs */
+    margin: 10px;
+    background-color: white;
+    width: 48%; 
     border: 1px solid #ccc;
+    border-radius: 5px;
     padding: 10px;
+    box-shadow: 0 2px 4px rgba(78, 77, 77, 0.2);
   }
   
   .scrollable-items {
-    max-height: 300px; /* Set a max height for scrollable items */
-    overflow-y: scroll; /* Enable vertical scrolling if needed */
+
+    overflow-y: scroll;
   }
   
+
+   
