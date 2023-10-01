@@ -89,3 +89,6 @@
     align-items: center;
     margin-top: 15px;
   }
+  .clear-button{
+    background-color: rgb(206, 32, 32);
+  }
