@@ -82,3 +82,10 @@
   .centered{
     text-align: center;
   }
+  .search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 15px;
+  }

@@ -3,13 +3,15 @@ import "../ProductCategory/AddProductCategory.css";
 import axios from 'axios';
 import Banner from '../Banner';
 import * as AiIcons from 'react-icons/ai';
-import * as BsIcons from 'react-icons/bs';
+import * as BiIcons from 'react-icons/bi';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
+
 const AddToCart = () => {
   const [availableItems, setAvailableItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const token = localStorage.getItem('token');
   const [costVisible, setCostVisible] = useState([]);
+  const [search, setsearch] = useState('');
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
@@ -47,7 +49,7 @@ const AddToCart = () => {
   };
 
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/api/product`;
+    const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,7 +64,7 @@ const AddToCart = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [token]);
+  }, [token,search]);
 
   return (
     <>
@@ -71,12 +73,22 @@ const AddToCart = () => {
         <div className="add-to-cart-container">
           <div className="available-items">
             <h2>Products</h2>
+            <div style={{marginBottom:'10px'}}>
+           <div className='search-container'>
+            <input
+              type='text'
+              placeholder='Search here...'
+              value={search}
+              onChange={(e) => setsearch(e.target.value)}
+            />
+          </div>
+            </div> 
             <div className="scrollable-items">
             <table>
               <thead>
                 <tr>
                   <th>Sr.</th>
-                  <th>Product Name</th>
+                  <th>Name</th>
                   <th>Supplier</th>
                   <th>Category</th>
                   <th>Cost</th>
@@ -95,7 +107,7 @@ const AddToCart = () => {
                     <td>{parseInt(item.prod_quantity)}</td>
                     <td >
                       <div style={{display:'flex',flexDirection:'row',padding:'10px'}}>
-                      <BsIcons.BsCartPlusFill onClick={() => addToCart(item)} size={22} color={'#123bb7'}/>
+                      <BiIcons.BiCartDownload onClick={() => addToCart(item)} size={24} color='green'/>
                       <AiIcons.AiFillEyeInvisible onClick={()=>toggleCostVisibility(index)}  size={24} color='black'/>
                       </div>
                     </td>
