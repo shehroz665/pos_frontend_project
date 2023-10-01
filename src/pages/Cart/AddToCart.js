@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react'
 import "../ProductCategory/AddProductCategory.css"
 import axios from 'axios';
 import Banner from '../Banner';
+import * as AiIcons from 'react-icons/ai';
 const AddToCart = () => {
   const [availableItems, setAvailableItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -37,8 +38,8 @@ const AddToCart = () => {
         <h2>Available Items</h2>
         <div className="scrollable-items">
           {availableItems.map((item) => (
-            <div key={item.id} onClick={() => addToCart(item)}>
-              {item.name}
+            <div key={item.prod_id} onClick={() => addToCart(item)}>
+              {item.prod_name}
             </div>
           ))}
         </div>
@@ -46,9 +47,14 @@ const AddToCart = () => {
       <div className="selected-items">
         <h2>Selected Items</h2>
         <div>
-          {/* Map through selectedItems and display them */}
           {selectedItems.map((item) => (
-            <div key={item.id}>{item.name}</div>
+            <div key={item.prod_id}>{item.prod_name}
+            <>
+            <AiIcons.AiOutlinePlus/>
+            <AiIcons.AiOutlineMinus/>
+            </>
+            </div>
+
           ))}
         </div>
       </div>
