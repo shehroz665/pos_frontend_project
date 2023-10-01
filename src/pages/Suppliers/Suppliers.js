@@ -7,14 +7,18 @@ import * as LiaIcons from 'react-icons/lia';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
-
+import ResponsivePagination from 'react-responsive-pagination';
+import 'react-responsive-pagination/themes/classic.css';
 const Suppliers = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [recallApi, setrecallApi] = useState(false);
-  const [token, settoken] = useState(localStorage.getItem('token'));
+  const token =localStorage.getItem('token');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, settotalPages] = useState(0);
+  const itemsPerPage = 10;
   useEffect(() => {
-    const apiUrl = 'http://127.0.0.1:8000/api/supplier';
+    const apiUrl = `http://127.0.0.1:8000/api/supplier?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,13 +27,15 @@ const Suppliers = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data)
+        console.log(response.data.data.last_page);
         setCategory(response.data.data.data);
+        settotalPages(response.data.data.last_page);
+
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi]);
+  }, [recallApi,currentPage,token]);
   const handleDelete = async (id) => {
     const apiUrl = `http://127.0.0.1:8000/api/supplier/destory/${id}`;
     const configs = {
@@ -73,7 +79,9 @@ const Suppliers = () => {
       showErrorAlert(error.message);
     }
   };
-  
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   return (
     <>
     <Banner title={"View Suppliers"}/>
@@ -112,7 +120,7 @@ const Suppliers = () => {
                     width={42}
                     height={20}
                     onChange={() => handleSwitchToggle(sup.sup_id)}
-                    checked={sup.status==1 ? true : false}
+                    checked={sup.status===1 ? true : false}
                     offColor="#CE2020"
                     onColor="#008000"
                   />
@@ -122,7 +130,11 @@ const Suppliers = () => {
           </tbody>
         </table>
       </div>
-
+      <ResponsivePagination
+          current={currentPage}
+          total={totalPages}
+          onPageChange={handlePageChange}
+        />
     </div>
     </>
 
