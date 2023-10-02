@@ -148,7 +148,7 @@ const AddToCart = () => {
           </div>
           <div className="selected-items">
             <h2>Cart</h2>
-            <div style={{ marginBottom: '10px' }}>
+            <div className='div-margin-down'>
               <button className='clear-button' onClick={() => setSelectedItems([])}>Clear All</button>
             </div>
             <div className="scrollable-items">
@@ -194,6 +194,9 @@ const AddToCart = () => {
                 <p>{totalQuantity}</p>
                 <p>Rs {parseInt(totalPrice)}</p>
               </div>
+            </div>
+            <div className='div-margin-up'> 
+              <button>Proceed</button>
             </div>
 
           </div>

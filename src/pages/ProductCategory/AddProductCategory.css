@@ -111,4 +111,9 @@
   .calculation-values {
     text-align: right;
   }
-  
+  .div-margin-up{
+    margin-top: 10px;
+  }
+  .div-margin-down{
+    margin-bottom: 10px;
+  }
