@@ -27,6 +27,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 
 import AddToCart from './pages/Cart/AddToCart';
+import GenerateInvoice from './pages/Invoice/GenerateInvoice';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route path='/supplier/update' element={<><Sidebar /><UpdateSupplier /></>} />
         <Route path='/supplier/archive' element={<><Sidebar /><AchiveSupplier /></>} />
 
+        <Route path='/invoice/print' element={<><Sidebar /><GenerateInvoice /></>} />
         <Route path='/addtocart' element={<><Sidebar /><AddToCart /></>} />
         <Route path='/sales' element={<><Sidebar /><Sales /></>} />
         <Route path='/settings' element={<><Sidebar /><Settings /></>} />

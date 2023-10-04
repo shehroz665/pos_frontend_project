@@ -7,8 +7,10 @@ import * as BiIcons from 'react-icons/bi';
 import * as MdIcons from 'react-icons/md';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const AddToCart = () => {
+  const navigate = useNavigate();
   const [availableItems, setAvailableItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const token = localStorage.getItem('token');
@@ -73,44 +75,45 @@ const AddToCart = () => {
   };
   const createInvoice = () => {
 
-    const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-    const data = 
-      {
-        cust_name:customerName,
-        cust_number: parseInt(customerPhoneNumber),
-        products: selectedItems,
-        total_products: parseInt(totalProducts),
-        total_price: parseInt(totalPrice),
-        total_quantity: parseInt(totalQuantity),
-    };
-    axios
-      .post(apiUrl, data, config)
-      .then((response) => {
-        console.log('API Response:', response.data.data.invoice_id);
-        setinvoiceId(response.data.data.invoice_id);
-        Swal.fire({
-          title:'Invoice generated successfully',
-          text: "Do you want to print the Invoice?",
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Print Invoice'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            console.log('go to print')
-          }
-        })
-      })
-      .catch((error) => {
-        console.error('API Error:', error);
-        showErrorAlert(error.message)
-      });
+    navigate('/invoice/print');
+    // const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    // };
+    // const data = 
+    //   {
+    //     cust_name:customerName,
+    //     cust_number: parseInt(customerPhoneNumber),
+    //     products: selectedItems,
+    //     total_products: parseInt(totalProducts),
+    //     total_price: parseInt(totalPrice),
+    //     total_quantity: parseInt(totalQuantity),
+    // };
+    // axios
+    //   .post(apiUrl, data, config)
+    //   .then((response) => {
+    //     console.log('API Response:', response.data.data.invoice_id);
+    //     setinvoiceId(response.data.data.invoice_id);
+    //     Swal.fire({
+    //       title:'Invoice generated successfully',
+    //       text: "Do you want to print the Invoice?",
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       confirmButtonText: 'Print Invoice'
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         console.log('go to print')
+    //       }
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     console.error('API Error:', error);
+    //     showErrorAlert(error.message)
+    //   });
   }
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
