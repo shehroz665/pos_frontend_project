@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { useLocation } from 'react-router-dom';
 const invoiceData = {
   invoiceNumber: '2023001',
   invoiceDate: '01/10/2023',
@@ -73,8 +74,9 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
   });
-
   const GenerateInvoice = () => {
+    const location = useLocation();
+    const id = location.state.id;
     return (
       <div className='home'>
         <PDFViewer width={500} height={600}>
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
                 <Text>Invoice</Text>
               </View>
               <View style={styles.section}>
-                <Text>Invoice Number: {invoiceData.invoiceNumber}</Text>
+                <Text>Invoice Number: {'I#'+id}</Text>
                 <Text>Invoice Date: {invoiceData.invoiceDate}</Text>
               </View>
               <View style={styles.section}>

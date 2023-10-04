@@ -19,17 +19,24 @@ const AddToCart = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
-  const [customerName, setcustomerName] = useState('');
-  const [customerPhoneNumber, setcustomerPhoneNumber] = useState('');
+  const [customerName, setcustomerName] = useState('shehroz');
+  const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
   const [invoiceId, setinvoiceId] = useState(0);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
-      setSelectedItems([...selectedItems, { ...item, quantity: 1 }]);
+      const newItem = {
+        prod_id: item.prod_id,
+        prod_name: item.prod_name,
+        quantity: 1,
+        prod_selling_price: parseFloat(item.prod_selling_price),
+        prod_cost: parseFloat(item.prod_cost), // Add product cost here
+      };
+      setSelectedItems([...selectedItems, newItem]);
     } else {
       showErrorAlert("Item is already in the cart");
     }
-  };
+  };  
   const toggleCostVisibility = (index) => {
     const updatedVisibility = [...costVisible];
     updatedVisibility[index] = !updatedVisibility[index];
@@ -75,45 +82,49 @@ const AddToCart = () => {
   };
   const createInvoice = () => {
 
-    navigate('/invoice/print');
-    // const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    // };
-    // const data = 
-    //   {
-    //     cust_name:customerName,
-    //     cust_number: parseInt(customerPhoneNumber),
-    //     products: selectedItems,
-    //     total_products: parseInt(totalProducts),
-    //     total_price: parseInt(totalPrice),
-    //     total_quantity: parseInt(totalQuantity),
-    // };
-    // axios
-    //   .post(apiUrl, data, config)
-    //   .then((response) => {
-    //     console.log('API Response:', response.data.data.invoice_id);
-    //     setinvoiceId(response.data.data.invoice_id);
-    //     Swal.fire({
-    //       title:'Invoice generated successfully',
-    //       text: "Do you want to print the Invoice?",
-    //       showCancelButton: true,
-    //       confirmButtonColor: '#3085d6',
-    //       cancelButtonColor: '#d33',
-    //       confirmButtonText: 'Print Invoice'
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         console.log('go to print')
-    //       }
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     console.error('API Error:', error);
-    //     showErrorAlert(error.message)
-    //   });
+    //navigate('/invoice/print');
+    const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const data = 
+      {
+        cust_name:customerName,
+        cust_number: parseInt(customerPhoneNumber),
+        products: selectedItems,
+        total_products: parseInt(totalProducts),
+        total_price: parseInt(totalPrice),
+        total_quantity: parseInt(totalQuantity),
+    };
+    axios
+      .post(apiUrl, data, config)
+      .then((response) => {
+        console.log('API Response:', response.data.data.invoice_id);
+        setinvoiceId(response.data.data.invoice_id);
+        Swal.fire({
+          title:'Invoice generated successfully',
+          text: "Do you want to print the Invoice?",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Print Invoice'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const propsToPass = {
+              id: response.data.data.invoice_id,
+            };
+            navigate('/invoice/print', { state: propsToPass });
+            console.log('go to print');
+          }
+        })
+      })
+      .catch((error) => {
+        console.error('API Error:', error);
+        showErrorAlert(error.message)
+      });
   }
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
@@ -268,7 +279,7 @@ const AddToCart = () => {
                     maxLength={11}
                     required
                   />
-                  <button onClick={()=>createInvoice()}>Create Invoice</button>
+                  <button onClick={()=>createInvoice()}>Generate Invoice</button>
                 </div>
                 </div>
 
