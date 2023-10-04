@@ -117,3 +117,52 @@
   .div-margin-down{
     margin-bottom: 10px;
   }
+  /* AddToCart.css (or your preferred CSS file) */
+
+/* Add this section at the end of your CSS file */
+.customer-details {
+  margin-top: 20px;
+}
+
+.customer-details h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.customer-form {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+.customer-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.customer-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.customer-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.customer-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Adjust the spacing and styling as needed */

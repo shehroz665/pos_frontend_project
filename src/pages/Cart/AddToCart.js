@@ -6,6 +6,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as BiIcons from 'react-icons/bi';
 import * as MdIcons from 'react-icons/md';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
+import Swal from 'sweetalert2';
 
 const AddToCart = () => {
   const [availableItems, setAvailableItems] = useState([]);
@@ -16,6 +17,9 @@ const AddToCart = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
+  const [customerName, setcustomerName] = useState('');
+  const [customerPhoneNumber, setcustomerPhoneNumber] = useState('');
+  const [invoiceId, setinvoiceId] = useState(0);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
@@ -67,6 +71,47 @@ const AddToCart = () => {
     });
     setSelectedItems(updatedSelectedItems);
   };
+  const createInvoice = () => {
+
+    const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    const data = 
+      {
+        cust_name:customerName,
+        cust_number: parseInt(customerPhoneNumber),
+        products: selectedItems,
+        total_products: parseInt(totalProducts),
+        total_price: parseInt(totalPrice),
+        total_quantity: parseInt(totalQuantity),
+    };
+    axios
+      .post(apiUrl, data, config)
+      .then((response) => {
+        console.log('API Response:', response.data.data.invoice_id);
+        setinvoiceId(response.data.data.invoice_id);
+        Swal.fire({
+          title:'Invoice generated successfully',
+          text: "Do you want to print the Invoice?",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Print Invoice'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log('go to print')
+          }
+        })
+      })
+      .catch((error) => {
+        console.error('API Error:', error);
+        showErrorAlert(error.message)
+      });
+  }
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
     const config = {
@@ -98,6 +143,9 @@ const AddToCart = () => {
     <>
       <Banner title={"Add to Cart"} />
       <div className='home'>
+        <div>
+
+        </div>
         <div className="add-to-cart-container">
           <div className="available-items">
             <h2>Products</h2>
@@ -195,13 +243,38 @@ const AddToCart = () => {
                 <p>Rs {parseInt(totalPrice)}</p>
               </div>
             </div>
-            <div className='div-margin-up'> 
-              <button>Proceed</button>
-            </div>
+            <div className='customer-details'>
+              {selectedItems.length!==0 && (
+                <div>
+                <h2>Customer Details</h2>
+                <div className='customer-form'>
+                  <label htmlFor='customerName'>Customer Name:</label>
+                  <input
+                    type='text'
+                    id='customerName'
+                    value={customerName}
+                    onChange={(e)=>setcustomerName(e.target.value)}
+                    required
+                  />
+                  <label htmlFor='customerPhoneNumber'>Phone Number:</label>
+                  <input
+                    type='text'
+                    id='customerPhoneNumber'
+                    value={customerPhoneNumber}
+                    onChange={(e)=>setcustomerPhoneNumber(e.target.value)}
+                    maxLength={11}
+                    required
+                  />
+                  <button onClick={()=>createInvoice()}>Create Invoice</button>
+                </div>
+                </div>
 
+              )}
+          </div>
           </div>
 
         </div>
+
 
       </div>
     </>
