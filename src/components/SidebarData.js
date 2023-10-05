@@ -6,6 +6,7 @@ import * as BsIcons from 'react-icons/bs';
 import * as GoIcons from 'react-icons/go';
 import * as Fa6Icons from 'react-icons/fa6';
 import * as Hi2Icons from 'react-icons/hi2';
+import * as TbIcons from 'react-icons/tb';
 export const SidebarData = [
   {
     title: 'Statistics',
@@ -84,6 +85,13 @@ export const SidebarData = [
     title: 'Add To Cart',
     path: '/addtocart',
     icon: <BiIcons.BiCartDownload />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+  },
+  {
+    title: 'Invoices',
+    path: '/invoices',
+    icon: <TbIcons.TbFileInvoice />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
   },

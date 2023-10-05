@@ -19,18 +19,20 @@ const AddToCart = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
-  const [customerName, setcustomerName] = useState('shehroz');
+  const [customerName, setcustomerName] = useState('xyz');
   const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
   const [invoiceId, setinvoiceId] = useState(0);
+  const [recallApi, setrecallApi] = useState(false);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
       const newItem = {
         prod_id: item.prod_id,
         prod_name: item.prod_name,
+        prod_quantity:parseInt(item.prod_quantity),
         quantity: 1,
         prod_selling_price: parseFloat(item.prod_selling_price),
-        prod_cost: parseFloat(item.prod_cost), // Add product cost here
+        prod_cost: parseFloat(item.prod_cost),
       };
       setSelectedItems([...selectedItems, newItem]);
     } else {
@@ -45,16 +47,18 @@ const AddToCart = () => {
   const incrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id) {
-        if (selectedItem.quantity < parseFloat(item.prod_quantity)) {
+        const availableQuantity = parseInt(item.prod_quantity); // Parse the quantity as an integer
+        if (!isNaN(availableQuantity) && selectedItem.quantity < availableQuantity) {
           return { ...selectedItem, quantity: selectedItem.quantity + 1 };
         } else {
-          showErrorAlert(`Cannot increase quantity beyond the available stock (${parseInt(item.prod_quantity)})`);
+          showErrorAlert(`Cannot increase quantity beyond the available stock (${availableQuantity})`);
         }
       }
       return selectedItem;
     });
     setSelectedItems(updatedSelectedItems);
   };
+  
   const decrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id && selectedItem.quantity > 1) {
@@ -81,8 +85,6 @@ const AddToCart = () => {
     setSelectedItems(updatedSelectedItems);
   };
   const createInvoice = () => {
-
-    //navigate('/invoice/print');
     const apiUrl = 'http://127.0.0.1:8000/api/invoice/add';
     const config = {
       headers: {
@@ -119,12 +121,16 @@ const AddToCart = () => {
             navigate('/invoice/print', { state: propsToPass });
             console.log('go to print');
           }
+          else{
+            setSelectedItems([]);
+          }
         })
       })
       .catch((error) => {
         console.error('API Error:', error);
         showErrorAlert(error.message)
       });
+      setrecallApi((prev) => !prev);
   }
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
@@ -142,7 +148,7 @@ const AddToCart = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [token, search]);
+  }, [token, search,recallApi]);
   useEffect(() => {
     console.log('selected->', selectedItems)
     setTotalProducts(selectedItems.length);
