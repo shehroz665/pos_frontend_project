@@ -1,6 +1,7 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 const invoiceData = {
   invoiceNumber: '2023001',
   invoiceDate: '01/10/2023',
@@ -59,6 +60,8 @@ const styles = StyleSheet.create({
     table: {
       display: 'table',
       width: 'auto',
+      marginTop:3,
+      marginBottom:3,
     },
     tableRow: {
       flexDirection: 'row',
@@ -68,15 +71,44 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#000',
       padding: 5,
+      textAlign:'center'
     },
     tableHeader: {
       backgroundColor: '#f2f2f2',
       fontWeight: 'bold',
     },
+    textWithPadding: {
+      marginTop: 3, 
+      marginBottom: 3,
+      fontSize: 13 
+    },
   });
   const GenerateInvoice = () => {
     const location = useLocation();
     const id = location.state.id;
+    const token = localStorage.getItem('token');
+    const [printContent, setprintContent] = useState([]);
+    const [products, setproducts] = useState([]);
+    useEffect(() => {
+      const apiUrl = `http://127.0.0.1:8000/api/invoice/${id}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };
+      axios.get(apiUrl, config)
+        .then((response) => {
+          console.log('API Response:', response.data.data);
+          setprintContent(response.data.data);
+          setproducts(response.data.data.products);
+          console.log(response.data.data.products);
+        })
+        .catch((error) => {
+          console.error('API Error:', error);
+        });
+    }, [id, token]);
+    
     return (
       <div className='home'>
         <PDFViewer width={500} height={600}>
@@ -86,41 +118,43 @@ const styles = StyleSheet.create({
                 <Text>Invoice</Text>
               </View>
               <View style={styles.section}>
-                <Text>Invoice Number: {'I#'+id}</Text>
-                <Text>Invoice Date: {invoiceData.invoiceDate}</Text>
+                <Text style={styles.textWithPadding}>Invoice Number: {'I#'+id}</Text>
+                <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_at}</Text>
               </View>
               <View style={styles.section}>
-                <Text>Sender:</Text>
-                <Text>{invoiceData.sender.company}</Text>
-                <Text>{invoiceData.sender.address}</Text>
-                <Text>{invoiceData.sender.zip}, {invoiceData.sender.city}, {invoiceData.sender.country}</Text>
+                <Text style={styles.textWithPadding}>Shop Name: Malik Bag House</Text>
+                <Text style={styles.textWithPadding}>Address: P-26,Regal Road,38850, Faisalabad, Pakistan</Text>
+                <Text style={styles.textWithPadding}>Contacts: 0300-6643047, 0304-1668462</Text>
               </View>
               <View style={styles.section}>
-                <Text>Client:</Text>
-                <Text>{invoiceData.client.company}</Text>
-                <Text>{invoiceData.client.address}</Text>
-                <Text>{invoiceData.client.zip}, {invoiceData.client.city}, {invoiceData.client.country}</Text>
+                <Text style={styles.textWithPadding}>Customer Details:</Text>
+                <Text style={styles.textWithPadding}>Name: {printContent.cust_name}</Text>
+                <Text style={styles.textWithPadding}>Number: {"0"+printContent.cust_number}</Text>
               </View>
               <View style={styles.section}>
-                <Text>Products:</Text>
+                <Text style={styles.textWithPadding}>Products:</Text>
                 <View style={styles.table}>
                   <View style={[styles.tableRow, styles.tableHeader]}>
-                    <Text style={styles.tableCell}>Description</Text>
-                    <Text style={styles.tableCell}>Quantity</Text>
-                    <Text style={styles.tableCell}>Price</Text>
+                  <Text style={[styles.tableCell,styles.textWithPadding]}>Sr#</Text>
+                    <Text style={[styles.tableCell,styles.textWithPadding]}>Description</Text>
+                    <Text style={[styles.tableCell,styles.textWithPadding]}>Quantity</Text>
+                    <Text style={[styles.tableCell,styles.textWithPadding]}>Price</Text>
                   </View>
-                  {invoiceData.products.map((product, index) => (
+                  {products.map((product, index) => (
                     <View key={index} style={styles.tableRow}>
-                      <Text style={styles.tableCell}>{product.description}</Text>
-                      <Text style={styles.tableCell}>{product.quantity}</Text>
-                      <Text style={styles.tableCell}>{product.price}</Text>
+                      <Text style={[styles.tableCell,styles.textWithPadding]}>{index+1}</Text>
+                      <Text style={[styles.tableCell,styles.textWithPadding]}>{product.prod_name}</Text>
+                      <Text style={[styles.tableCell,styles.textWithPadding]}>{product.quantity}</Text>
+                      <Text style={[styles.tableCell,styles.textWithPadding]}>Rs {parseInt(product.prod_selling_price)}</Text>
                     </View>
                   ))}
                 </View>
               </View>
               <View style={styles.section}>
-                <Text>Bottom Notice:</Text>
-                <Text>{invoiceData.bottomNotice}</Text>
+                <Text style={styles.textWithPadding}>Total Products: {printContent.total_products}</Text>
+                <Text style={styles.textWithPadding}>Total Quantity: {printContent.total_quantity}</Text>
+                <Text style={styles.textWithPadding}>Total : Rs {printContent.total_price}</Text>
+
               </View>
             </Page>
           </Document>
