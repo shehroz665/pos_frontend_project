@@ -2,12 +2,7 @@ import React,{useState,useEffect} from 'react'
 import "../ProductCategory/ProductCategory.css"
 import Banner from '../Banner';
 import axios from 'axios';
-import * as MdIcons from 'react-icons/md';
-import * as LiaIcons from 'react-icons/lia';
-import * as AiIcons from 'react-icons/ai';
-import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
-import Switch from 'react-switch';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 import * as TbIcons from 'react-icons/tb';
@@ -15,7 +10,6 @@ import * as TbIcons from 'react-icons/tb';
 const Invoice = () => {
   const navigate = useNavigate();
   const [invoice, setinvoice] = useState([]);
-  const [recallApi, setrecallApi] = useState(false);
   const token = localStorage.getItem('token');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, settotalPages] = useState(0);
@@ -41,8 +35,7 @@ const Invoice = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi,currentPage,token,search]);
-
+  }, [currentPage,token,search]);
   const edit=(id)=> {
     console.log('edit',id);
     const propsToPass = {
@@ -93,7 +86,7 @@ const Invoice = () => {
                 <td className='centered'>{inv.total_products}</td>
                 <td className='centered'>Rs {inv.total_price}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{12345}</td>
+                <td className='centered'>{inv.created_at}</td>
                 <td className='centered'>
                   <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
               </tr>
