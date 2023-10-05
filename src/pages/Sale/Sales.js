@@ -80,6 +80,7 @@ const Sales = () => {
               <th className='centered'>Customer Phone</th>
               <th className='centered'>Total Products</th> 
               <th className='centered'>Total Price</th> 
+              <th className='centered'>Total Cost</th> 
               <th className='centered'>Total Quantity</th>
               <th className='centered'>Date</th>                       
               <th className='centered'>Actions</th>
@@ -97,6 +98,7 @@ const Sales = () => {
                 <td className='centered'>{inv.cust_number}</td>
                 <td className='centered'>{inv.total_products}</td>
                 <td className='centered'>Rs {inv.total_price}</td>
+                <td className='centered'>Rs {inv.total_cost}</td>
                 <td className='centered'>{inv.total_quantity}</td>
                 <td className='centered'>{inv.created_at}</td>
                 <td className='centered'>

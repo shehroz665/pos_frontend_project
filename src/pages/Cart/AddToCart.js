@@ -18,6 +18,7 @@ const AddToCart = () => {
   const [search, setsearch] = useState('');
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalCost, settotalCost] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
   const [customerName, setcustomerName] = useState('xyz');
   const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
@@ -100,6 +101,7 @@ const AddToCart = () => {
         total_products: parseInt(totalProducts),
         total_price: parseInt(totalPrice),
         total_quantity: parseInt(totalQuantity),
+        total_cost:parseInt(totalCost)
     };
     axios
       .post(apiUrl, data, config)
@@ -157,6 +159,9 @@ const AddToCart = () => {
     }, 0));
     settotalQuantity(selectedItems.reduce((total, item) => {
       return total + item.quantity;
+    }, 0));
+    settotalCost(selectedItems.reduce((total, item) => {
+      return total + item.quantity * parseFloat(item.prod_cost);
     }, 0));
   }, [selectedItems])
   return (
@@ -256,11 +261,13 @@ const AddToCart = () => {
                 <p>Total Products:</p>
                 <p>Total Quantity:</p>
                 <p>Total Price:</p>
+                <p>Total Cost: </p>
               </div>
               <div className="calculation-values">
                 <p>{totalProducts}</p>
                 <p>{totalQuantity}</p>
                 <p>Rs {parseInt(totalPrice)}</p>
+                <p>Rs {parseInt(totalCost)}</p>              
               </div>
             </div>
             <div className='customer-details'>
