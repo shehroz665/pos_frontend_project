@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
-import * as GrIcons from 'react-icons/gr';
 import * as FcIcons from 'react-icons/fc'
 import { showSuccessAlert,showErrorAlert } from '../Alerts/Alert';
 const Credit = () => {
@@ -111,7 +110,7 @@ const Credit = () => {
                 <td className='centered'>Rs {inv.borrow_amount}</td>
                 <td className='centered'>Rs {inv.total_price-inv.borrow_amount}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{inv.created_at}</td>
+                <td className='centered'>{inv.updated_at}</td>
                 <td className='centered'>
                   <FcIcons.FcCheckmark onClick={()=> updateCredit(inv)}
                    size={24}/></td>
