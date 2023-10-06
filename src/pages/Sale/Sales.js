@@ -14,11 +14,15 @@ const Sales = () => {
   const [totalPages, settotalPages] = useState(0);
   const itemsPerPage = 10;
   const [date, setDate] = useState(formatDate(new Date()));
+  const [salesCalculations, setsalesCalculations] = useState({});
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalCost, settotalCost] = useState(0);
+  const [totalQuantity, settotalQuantity] = useState(0);
   useEffect(() => {
-    console.log('date',formatDateToDDMMYYYY(date));
+    //console.log('date',formatDateToDDMMYYYY(date));
     const formatedDate =formatDateToDDMMYYYY(date);
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${formatedDate}`;
-    console.log('url',apiUrl)
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,6 +38,25 @@ const Sales = () => {
         console.error('Error fetching product data:', error);
       });
   }, [currentPage,token,date]);
+  useEffect(() => {
+    console.log('date',formatDateToDDMMYYYY(date));
+    const formatedDate =formatDateToDDMMYYYY(date);
+    const apiUrl = `http://127.0.0.1:8000/api/invoice/sales?&search=${formatedDate}`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    axios.get(apiUrl,config)
+      .then((response) => {
+       console.log(response.data.data);
+       setsalesCalculations(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching product data:', error);
+      });
+  }, [token,date]);
   function formatDate(inputDate) {
   const date = new Date(inputDate);
   const year = date.getFullYear();
@@ -62,15 +85,36 @@ const Sales = () => {
     <>
     <Banner title={"View Sales"}/>
     <div className='home'>
-      <div className='search-container'>
+    <div className='search-container'>
             <input
               type='date'
-              
+              className='search-input'
               value={date}
               onChange={(e)=>setDate(e.target.value)}
-              
             />
-          </div>
+      </div>
+        <div className='table-container'>
+        <table>
+          <thead>
+            <tr>
+              <th>Total Products</th>
+              <th className='centered'>Total Quantity</th>
+              <th className='centered'>Total Price</th>
+              <th className='centered'>Total Cost</th> 
+              <th className='centered'>Total Profit</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td>{salesCalculations.total_products_sum}</td>
+                <td className='centered'>{salesCalculations.total_quantity_sum}</td>
+                <td className='centered'>{salesCalculations.total_price_sum}</td>
+                <td className='centered'>{salesCalculations.total_cost_sum}</td>
+                <td className='centered'>{salesCalculations.total_price_sum-salesCalculations.total_cost_sum}</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
       <div className='table-container'>
         <table>
           <thead>

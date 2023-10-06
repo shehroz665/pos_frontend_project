@@ -54,29 +54,8 @@
     flex: 1; 
     margin-left: 970px;
   }
-/* Your custom CSS styles */
 
-/* Style the date picker container */
-.react-datepicker {
-  font-family: Arial, sans-serif;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  width: 200px;
-  background-color: #fff;
-}
 
-/* Style the date picker input */
-.react-datepicker__input-container {
-  display: block;
-}
-
-.react-datepicker__input-container input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 
 
 
