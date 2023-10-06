@@ -86,7 +86,8 @@ const Invoice = () => {
                 <td className='centered'>{inv.total_products}</td>
                 <td className='centered'>Rs {inv.total_price}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{inv.created_at}</td>
+                {/* <td className='centered'>{inv.created_at}</td> */}
+                <td className='centered'>{inv.updated_at}</td>
                 <td className='centered'>
                   <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
               </tr>

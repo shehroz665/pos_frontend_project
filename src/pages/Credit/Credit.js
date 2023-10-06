@@ -5,8 +5,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
-import * as TbIcons from 'react-icons/tb';
-
+import * as GrIcons from 'react-icons/gr';
+import * as FcIcons from 'react-icons/fc'
+import { showSuccessAlert,showErrorAlert } from '../Alerts/Alert';
 const Credit = () => {
     const navigate = useNavigate();
     const [invoice, setinvoice] = useState([]);
@@ -15,6 +16,7 @@ const Credit = () => {
     const [totalPages, settotalPages] = useState(0);
     const [search, setsearch] = useState('');
     const itemsPerPage = 10;
+    const [recallApi, setrecallApi] = useState(false);
     useEffect(() => {
       const apiUrl = `http://127.0.0.1:8000/api/invoice/credit?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
       console.log('url',apiUrl)
@@ -35,14 +37,33 @@ const Credit = () => {
         .catch((error) => {
           console.error('Error fetching product data:', error);
         });
-    }, [currentPage,token,search]);
-    const edit=(id)=> {
-      console.log('edit',id);
-      const propsToPass = {
-        id: id,
+    }, [currentPage,token,search,recallApi]);
+    const updateCredit = (item) => {
+        const apiUrl = `http://127.0.0.1:8000/api/invoice/update/${item.invoice_id}`;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        };
+        const data={
+            status:1,
+            borrow_amount:parseInt(item.total_price),
+          };
+        axios
+          .post(apiUrl, data, config)
+          .then((response) => {
+            console.log('API Response:', response.data);
+            showSuccessAlert('Credit Invoice updated successfully');
+            setrecallApi((prev) => !prev);
+            navigate('/sales');
+          })
+          .catch((error) => {
+            console.error('API Error:', error);
+            showErrorAlert(error.message)
+          });
+          
       };
-      navigate('/invoice/print', { state: propsToPass });
-    }
     const handlePageChange = (newPage) => {
       setCurrentPage(newPage);
     };
@@ -77,10 +98,10 @@ const Credit = () => {
           </thead>
           <tbody>
            {invoice.length===0? <tr>
-      <td colSpan="8" className="centered">
+      <td colSpan="10" className="centered">
         No records found
       </td>
-    </tr>  :(invoice.map((inv,index) => (
+    </tr>  :(invoice.map((inv) => (
               <tr key={inv.invoice_id}>
                 <td>{inv.invoice_id}</td>
                 <td className='centered'>{inv.cust_name}</td>
@@ -92,7 +113,9 @@ const Credit = () => {
                 <td className='centered'>{inv.total_quantity}</td>
                 <td className='centered'>{inv.created_at}</td>
                 <td className='centered'>
-                  <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
+                  <FcIcons.FcCheckmark onClick={()=> updateCredit(inv)}
+                   size={24}/></td>
+                   
               </tr>
             )))   } 
           </tbody>

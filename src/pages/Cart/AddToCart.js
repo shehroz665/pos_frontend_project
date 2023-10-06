@@ -53,7 +53,7 @@ const AddToCart = () => {
   const incrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id) {
-        const availableQuantity = parseInt(item.prod_quantity); // Parse the quantity as an integer
+        const availableQuantity = parseInt(item.prod_quantity);
         if (!isNaN(availableQuantity) && selectedItem.quantity < availableQuantity) {
           return { ...selectedItem, quantity: selectedItem.quantity + 1 };
         } else {
@@ -113,7 +113,6 @@ const AddToCart = () => {
     axios
       .post(apiUrl, data, config)
       .then((response) => {
-        // console.log('API Response:', response.data.data.invoice_id);
         Swal.fire({
           title: 'Invoice generated successfully',
           text: "Do you want to print the Invoice?",
@@ -127,7 +126,6 @@ const AddToCart = () => {
               id: response.data.data.invoice_id,
             };
             navigate('/invoice/print', { state: propsToPass });
-            // console.log('go to print');
           }
           else {
             setSelectedItems([]);
@@ -312,7 +310,7 @@ const AddToCart = () => {
                       id="customerPaymentMethod"
                       name="customerPaymentMethod"
                       value={selectedPaymentMethod}
-                      onChange={(e) => setselectedPaymentMethod(e.target.value)}
+                      onChange={(event)=>setselectedPaymentMethod(event.target.value)}
                       required
                     >
                       {paymentMethods.map((pay) => (
