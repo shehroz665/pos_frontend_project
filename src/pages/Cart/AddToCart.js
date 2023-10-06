@@ -5,7 +5,7 @@ import Banner from '../Banner';
 import * as AiIcons from 'react-icons/ai';
 import * as BiIcons from 'react-icons/bi';
 import * as MdIcons from 'react-icons/md';
-import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
+import { showErrorAlert } from '../Alerts/Alert';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const AddToCart = () => {
   const [totalQuantity, settotalQuantity] = useState(0);
   const [customerName, setcustomerName] = useState('xyz');
   const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
-  const [invoiceId, setinvoiceId] = useState(0);
+  //const [invoiceId, setinvoiceId] = useState(0);
   const [recallApi, setrecallApi] = useState(false);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
@@ -107,7 +107,7 @@ const AddToCart = () => {
       .post(apiUrl, data, config)
       .then((response) => {
         console.log('API Response:', response.data.data.invoice_id);
-        setinvoiceId(response.data.data.invoice_id);
+        // setinvoiceId(response.data.data.invoice_id);
         Swal.fire({
           title:'Invoice generated successfully',
           text: "Do you want to print the Invoice?",
@@ -135,7 +135,7 @@ const AddToCart = () => {
       setrecallApi((prev) => !prev);
   }
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/api/product?search=${search}`;
+    const apiUrl = `http://127.0.0.1:8000/api/product/availableProducts?search=${search}`;
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -261,13 +261,11 @@ const AddToCart = () => {
                 <p>Total Products:</p>
                 <p>Total Quantity:</p>
                 <p>Total Price:</p>
-                <p>Total Cost: </p>
               </div>
               <div className="calculation-values">
                 <p>{totalProducts}</p>
                 <p>{totalQuantity}</p>
-                <p>Rs {parseInt(totalPrice)}</p>
-                <p>Rs {parseInt(totalCost)}</p>              
+                <p>Rs {parseInt(totalPrice)}</p>             
               </div>
             </div>
             <div className='customer-details'>
