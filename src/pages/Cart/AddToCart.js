@@ -20,9 +20,14 @@ const AddToCart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalCost, settotalCost] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
+  const [totalReceived, settotalReceived] = useState(0);
   const [customerName, setcustomerName] = useState('xyz');
   const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
-  //const [invoiceId, setinvoiceId] = useState(0);
+  const paymentMethods = [
+    { id: 1, name: 'Paid' },
+    { id: 2, name: 'Borrow' },
+  ];
+  const [selectedPaymentMethod, setselectedPaymentMethod] = useState(paymentMethods[0].name);
   const [recallApi, setrecallApi] = useState(false);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
@@ -30,7 +35,7 @@ const AddToCart = () => {
       const newItem = {
         prod_id: item.prod_id,
         prod_name: item.prod_name,
-        prod_quantity:parseInt(item.prod_quantity),
+        prod_quantity: parseInt(item.prod_quantity),
         quantity: 1,
         prod_selling_price: parseFloat(item.prod_selling_price),
         prod_cost: parseFloat(item.prod_cost),
@@ -39,7 +44,7 @@ const AddToCart = () => {
     } else {
       showErrorAlert("Item is already in the cart");
     }
-  };  
+  };
   const toggleCostVisibility = (index) => {
     const updatedVisibility = [...costVisible];
     updatedVisibility[index] = !updatedVisibility[index];
@@ -59,7 +64,7 @@ const AddToCart = () => {
     });
     setSelectedItems(updatedSelectedItems);
   };
-  
+
   const decrementQuantity = (item) => {
     const updatedSelectedItems = selectedItems.map((selectedItem) => {
       if (selectedItem.prod_id === item.prod_id && selectedItem.quantity > 1) {
@@ -93,23 +98,24 @@ const AddToCart = () => {
         'Content-Type': 'application/json',
       },
     };
-    const data = 
-      {
-        cust_name:customerName,
-        cust_number: parseInt(customerPhoneNumber),
-        products: selectedItems,
-        total_products: parseInt(totalProducts),
-        total_price: parseInt(totalPrice),
-        total_quantity: parseInt(totalQuantity),
-        total_cost:parseInt(totalCost)
+    const data =
+    {
+      cust_name: customerName,
+      cust_number: parseInt(customerPhoneNumber),
+      products: selectedItems,
+      total_products: parseInt(totalProducts),
+      total_price: parseInt(totalPrice),
+      total_quantity: parseInt(totalQuantity),
+      total_cost: parseInt(totalCost),
+      status:selectedPaymentMethod===paymentMethods[0].name ? 1 : 2,
+      borrow_amount:parseInt(totalReceived), 
     };
     axios
       .post(apiUrl, data, config)
       .then((response) => {
-        console.log('API Response:', response.data.data.invoice_id);
-        // setinvoiceId(response.data.data.invoice_id);
+        // console.log('API Response:', response.data.data.invoice_id);
         Swal.fire({
-          title:'Invoice generated successfully',
+          title: 'Invoice generated successfully',
           text: "Do you want to print the Invoice?",
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -121,9 +127,9 @@ const AddToCart = () => {
               id: response.data.data.invoice_id,
             };
             navigate('/invoice/print', { state: propsToPass });
-            console.log('go to print');
+            // console.log('go to print');
           }
-          else{
+          else {
             setSelectedItems([]);
           }
         })
@@ -132,7 +138,7 @@ const AddToCart = () => {
         console.error('API Error:', error);
         showErrorAlert(error.message)
       });
-      setrecallApi((prev) => !prev);
+    setrecallApi((prev) => !prev);
   }
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product/availableProducts?search=${search}`;
@@ -144,17 +150,19 @@ const AddToCart = () => {
     };
     axios.get(apiUrl, config)
       .then((response) => {
-        console.log(response.data.data.data)
+        // console.log(response.data.data.data)
         setAvailableItems(response.data.data.data);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [token, search,recallApi]);
+  }, [token, search, recallApi]);
   useEffect(() => {
-    console.log('selected->', selectedItems)
     setTotalProducts(selectedItems.length);
     setTotalPrice(selectedItems.reduce((total, item) => {
+      return total + item.quantity * parseFloat(item.prod_selling_price);
+    }, 0));
+    settotalReceived(selectedItems.reduce((total, item) => {
       return total + item.quantity * parseFloat(item.prod_selling_price);
     }, 0));
     settotalQuantity(selectedItems.reduce((total, item) => {
@@ -265,37 +273,59 @@ const AddToCart = () => {
               <div className="calculation-values">
                 <p>{totalProducts}</p>
                 <p>{totalQuantity}</p>
-                <p>Rs {parseInt(totalPrice)}</p>             
+                <p>Rs {parseInt(totalPrice)}</p>
               </div>
             </div>
             <div className='customer-details'>
-              {selectedItems.length!==0 && (
+              {selectedItems.length !== 0 && (
                 <div>
-                <h2>Customer Details</h2>
-                <div className='customer-form'>
-                  <label htmlFor='customerName'>Customer Name:</label>
-                  <input
-                    type='text'
-                    id='customerName'
-                    value={customerName}
-                    onChange={(e)=>setcustomerName(e.target.value)}
-                    required
-                  />
-                  <label htmlFor='customerPhoneNumber'>Phone Number:</label>
-                  <input
-                    type='text'
-                    id='customerPhoneNumber'
-                    value={customerPhoneNumber}
-                    onChange={(e)=>setcustomerPhoneNumber(e.target.value)}
-                    maxLength={11}
-                    required
-                  />
-                  <button onClick={()=>createInvoice()}>Generate Invoice</button>
-                </div>
+                  <h2>Customer Details</h2>
+                  <div className='customer-form'>
+                    <label htmlFor='customerName'>Customer Name:</label>
+                    <input
+                      type='text'
+                      id='customerName'
+                      value={customerName}
+                      onChange={(e) => setcustomerName(e.target.value)}
+                      required
+                    />
+                    <label htmlFor='customerPhoneNumber'>Phone Number:</label>
+                    <input
+                      type='text'
+                      id='customerPhoneNumber'
+                      value={customerPhoneNumber}
+                      onChange={(e) => setcustomerPhoneNumber(e.target.value)}
+                      maxLength={11}
+                      required
+                    />
+                    <label htmlFor='customerPaymentMethod'>Payment Method:</label>
+                    <select
+                      id="customerPaymentMethod"
+                      name="customerPaymentMethod"
+                      value={selectedPaymentMethod}
+                      onChange={(e) => setselectedPaymentMethod(e.target.value)}
+                      required
+                    >
+                      {paymentMethods.map((pay) => (
+                        <option key={pay.id} value={pay.id}>
+                          {pay.name}
+                        </option>
+                      ))}
+                    </select>
+                    <label htmlFor='customerAmountReceived'>Amount Received:</label>
+                    <input
+                      type='number'
+                      id='customerAmountReceived'
+                      value={totalReceived}
+                      onChange={(e) => settotalReceived(e.target.value)}
+                      required
+                    />
+                    <button  className="invoice-button" onClick={() => createInvoice()}>Generate Invoice</button>
+                  </div>
                 </div>
 
               )}
-          </div>
+            </div>
           </div>
 
         </div>
