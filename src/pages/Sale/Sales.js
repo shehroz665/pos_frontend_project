@@ -110,7 +110,7 @@ const Sales = () => {
                 <td className='centered'>{salesCalculations.total_quantity_sum}</td>
                 <td className='centered'>{salesCalculations.total_price_sum}</td>
                 <td className='centered'>{salesCalculations.total_cost_sum}</td>
-                <td className='centered'>{salesCalculations.total_price_sum-salesCalculations.total_cost_sum}</td>
+                <td className='centered'>{parseInt(salesCalculations.total_price_sum-salesCalculations.total_cost_sum)}</td>
               </tr>
           </tbody>
         </table>

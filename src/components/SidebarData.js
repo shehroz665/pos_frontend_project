@@ -35,6 +35,12 @@ export const SidebarData = [
         icon: <Hi2Icons.HiOutlineArchiveBoxXMark />,
         cName: 'sub-nav'
       },
+      {
+        title: 'Out of Stock',
+        path: '/product/outofstock',
+        icon: <BsIcons.BsExclamationCircle />,
+        cName: 'sub-nav'
+      },
     ]
   },
   {
@@ -99,6 +105,13 @@ export const SidebarData = [
     title: 'Sales',
     path: '/sales',
     icon: <BsIcons.BsCashCoin />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+  },
+  {
+    title: 'Credit',
+    path: '/credit',
+    icon: <BsIcons.BsCreditCard />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
   },

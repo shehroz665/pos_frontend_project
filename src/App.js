@@ -11,6 +11,7 @@ import AddProduct from './pages/Product/AddProduct';
 import Products from './pages/Product/Products';
 import ArchiveProducts from './pages/Product/ArchiveProducts';
 import UpdateProduct from './pages/Product/UpdateProduct';
+import OutofStock from './pages/Product/OutofStock';
 
 import Suppliers from './pages/Suppliers/Suppliers'
 import AddSupplier from './pages/Suppliers/AddSupplier';
@@ -30,6 +31,7 @@ import AddToCart from './pages/Cart/AddToCart';
 import GenerateInvoice from './pages/Invoice/GenerateInvoice';
 
 import Invoice from './pages/Invoice/Invoice';
+import Credit from './pages/Credit/Credit';
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
         <Route path='/product/add' element={<><Sidebar /><AddProduct /></>} />
         <Route path='/product/update' element={<><Sidebar /><UpdateProduct /></>} />
         <Route path='/product/archive' element={<><Sidebar /><ArchiveProducts /></>} />
+        <Route path='/product/outofstock' element={<><Sidebar /><OutofStock /></>} />
+        
         {/*Product Category */}
         <Route path='/productcategory' element={<><Sidebar /><ProductCategory /></>} />
         <Route path='/productcategory/add' element={<><Sidebar /><AddProductCategory /></>} />
@@ -64,6 +68,8 @@ function App() {
         <Route path='/sales' element={<><Sidebar /><Sales /></>} />
         <Route path='/settings' element={<><Sidebar /><Settings /></>} />
         <Route path='/logout' element={<><Sidebar /><Logout /></>} />
+
+        <Route path='/credit' element={<><Sidebar /><Credit /></>} />
       </Routes>
     </Router>
   );

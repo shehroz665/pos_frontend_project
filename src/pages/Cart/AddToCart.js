@@ -21,8 +21,8 @@ const AddToCart = () => {
   const [totalCost, settotalCost] = useState(0);
   const [totalQuantity, settotalQuantity] = useState(0);
   const [totalReceived, settotalReceived] = useState(0);
-  const [customerName, setcustomerName] = useState('xyz');
-  const [customerPhoneNumber, setcustomerPhoneNumber] = useState('03016036804');
+  const [customerName, setcustomerName] = useState('');
+  const [customerPhoneNumber, setcustomerPhoneNumber] = useState('');
   const paymentMethods = [
     { id: 1, name: 'Paid' },
     { id: 2, name: 'Borrow' },
@@ -131,6 +131,14 @@ const AddToCart = () => {
           }
           else {
             setSelectedItems([]);
+            setsearch('');
+            setTotalProducts(0);
+            setTotalPrice(0);
+            settotalCost(0);
+            settotalQuantity(0);
+            settotalReceived(0);
+            setcustomerName('');
+            setcustomerPhoneNumber('');
           }
         })
       })
@@ -158,6 +166,7 @@ const AddToCart = () => {
       });
   }, [token, search, recallApi]);
   useEffect(() => {
+    setselectedPaymentMethod(paymentMethods[0].name);
     setTotalProducts(selectedItems.length);
     setTotalPrice(selectedItems.reduce((total, item) => {
       return total + item.quantity * parseFloat(item.prod_selling_price);
