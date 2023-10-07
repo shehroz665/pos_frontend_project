@@ -15,10 +15,6 @@ const Sales = () => {
   const itemsPerPage = 10;
   const [date, setDate] = useState(formatDate(new Date()));
   const [salesCalculations, setsalesCalculations] = useState({});
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalCost, settotalCost] = useState(0);
-  const [totalQuantity, settotalQuantity] = useState(0);
   useEffect(() => {
     //console.log('date',formatDateToDDMMYYYY(date));
     const formatedDate =formatDateToDDMMYYYY(date);
@@ -146,7 +142,7 @@ const Sales = () => {
                 <td className='centered'>Rs {inv.total_price}</td>
                 <td className='centered'>Rs {inv.total_cost}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{inv.created_at}</td>
+                <td className='centered'>{inv.updated_at}</td>
                 <td className='centered'>
                   <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
               </tr>
