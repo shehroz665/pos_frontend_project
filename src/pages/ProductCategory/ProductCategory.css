@@ -80,6 +80,19 @@
     background-color: #022888;
     color: white;
   }
+  .statistics-graph-container{
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+    color: #022888;
+    text-decoration: none;
+  }
 
 
   

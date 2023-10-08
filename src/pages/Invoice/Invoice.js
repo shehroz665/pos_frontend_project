@@ -78,7 +78,7 @@ const Invoice = () => {
       <td colSpan="8" className="centered">
         No records found
       </td>
-    </tr>  :(invoice.map((inv,index) => (
+    </tr>  :(invoice.map((inv) => (
               <tr key={inv.invoice_id}>
                 <td>{inv.invoice_id}</td>
                 <td className='centered'>{inv.cust_name}</td>
