@@ -16,7 +16,7 @@ const Sales = () => {
   const [date, setDate] = useState(formatDate(new Date()));
   const [salesCalculations, setsalesCalculations] = useState({});
   useEffect(() => {
-    //console.log('date',formatDateToDDMMYYYY(date));
+    console.log('input date',date);
     const formatedDate =formatDateToDDMMYYYY(date);
     console.log('formatted Date',formatedDate)
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${formatedDate}`;
@@ -74,8 +74,9 @@ const Sales = () => {
   function formatDateToDDMMYYYY(inputDate) {
     const parts = inputDate.split('-');
     if (parts.length === 3) {
-      const [year, month, day] = parts;
-      return `${day}-${month}-${year}`;
+        const [year, month, day] = parts;
+        const shortenedYear = year.slice(-2);
+        return `${day}-${month}-${shortenedYear}`;
     }
   }
   return (
@@ -120,18 +121,19 @@ const Sales = () => {
             <tr>
               <th>Sr.</th>
               <th className='centered'>Customer Name</th>
-              <th className='centered'>Customer Phone</th>
+              <th className='centered'>Contact</th>
               <th className='centered'>Total Products</th> 
               <th className='centered'>Total Price</th> 
               <th className='centered'>Total Cost</th> 
               <th className='centered'>Total Quantity</th>
-              <th className='centered'>Date</th>                       
+              <th className='centered'>Created Date</th>
+              <th className='centered'>Updated Date</th>                     
               <th className='centered'>Actions</th>
             </tr>
           </thead>
           <tbody>
            {invoice.length===0? <tr>
-      <td colSpan="9" className="centered">
+      <td colSpan="10" className="centered">
         No records found
       </td>
     </tr>  :(invoice.map((inv) => (
@@ -143,7 +145,8 @@ const Sales = () => {
                 <td className='centered'>Rs {inv.total_price}</td>
                 <td className='centered'>Rs {inv.total_cost}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{inv.updated_at}</td>
+                <td className='centered'>{inv.created_date}</td>
+                <td className='centered'>{inv.updated_date}</td>
                 <td className='centered'>
                   <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
               </tr>
