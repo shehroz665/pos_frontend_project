@@ -91,6 +91,7 @@ const ArchiveProducts = () => {
               <th className='centered'>Size</th>
               <th className='centered'>Quantity</th>              
               <th className='centered'>Status</th>
+              <th className='centered'>Updated Date</th>
               <th className='centered'>Actions</th>
             </tr>
           </thead>
@@ -112,6 +113,7 @@ const ArchiveProducts = () => {
                 <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {prod.status === 1 ? "Active" : "Deleted"}
                 </td>
+                <td className='centered'>{prod.updated_date}</td>
                 <td className='centered'>
                   <>
                   <AiIcons.AiFillEyeInvisible onClick={()=>toggleCostVisibility(index)}  size={24} color='black'/>
