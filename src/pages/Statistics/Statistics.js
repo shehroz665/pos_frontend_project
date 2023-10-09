@@ -75,14 +75,13 @@ const Statistics = () => {
       </div>
       <div className='statistics-container'>
         <div className="statistics-graph-container">
-          <h1>graph</h1>
           <BarChart width={600} height={400} data={graphdata}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="sales" fill="#8884d8" />
+            <Bar dataKey="sales" fill="#022888" />
           </BarChart>
         </div>
         <div className="statistics-graph-container">
