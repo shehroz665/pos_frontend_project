@@ -10,6 +10,7 @@ const Statistics = () => {
   const [totalSuppliers, settotalSuppliers] = useState(0);
   const [totalProducts, settotalProducts] = useState(0);
   const [totoalSalesToday, settotoalSalesToday] = useState(0);
+  const [totalStock, settotalStock] = useState(0);
   const [totalCategory, settotalCategory] = useState(0);
   const data = [
     { name: 'Category A', sales: 4000,  },
@@ -30,10 +31,12 @@ const Statistics = () => {
       .then((response) => {
         console.log(response.data.data);
         const responseData =response.data.data;
+        settotoalSalesToday(responseData.sales.total_price_sum);
+        settotalStock(parseInt(responseData.totalStock));
+        settotalProducts(responseData.products);
         settotalCategory(responseData.categories);
         settotalSuppliers(responseData.suppliers);
-        settotalProducts(responseData.products);
-        settotoalSalesToday(responseData.sales.total_price_sum);
+ 
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
@@ -46,6 +49,10 @@ const Statistics = () => {
           <h2>Today Sales</h2>
           <p>Rs {totoalSalesToday}</p>
         </Link>
+        <div className="statistic-box">
+          <h2>Total Stock</h2>
+          <p>Rs {totalStock}</p>
+        </div>
         <Link to="/products" className="statistic-box" onClick={()=> navigate('/products')}>
           <h2>Total Products</h2>
           <p>{totalProducts}</p>
