@@ -91,7 +91,7 @@ const Suppliers = () => {
           <input
             type='text'
             className='search-input'
-            placeholder='Search by name, contact'
+            placeholder='Search here...'
             value={search}
             onChange={(e) => setsearch(e.target.value)}
           />
@@ -105,12 +105,14 @@ const Suppliers = () => {
               <th className='centered'>Contact</th>
               <th className='centered'>Description</th>
               <th className='centered'>Status</th>
+              <th className='centered'>Created Date</th>
+              <th className='centered'>Updated Date</th>
               <th className='centered'>Actions</th>
             </tr>
           </thead>
           <tbody>
            {category.length===0? <tr>
-      <td colSpan="6" className="centered">
+      <td colSpan="8" className="centered">
         No records found
       </td>
     </tr>  :(category.map((sup) => (
@@ -122,6 +124,8 @@ const Suppliers = () => {
                 <td className={`centered ${sup.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {sup.status === 1 ? "Active" : "Deactivated"}
                 </td>
+                <td className='centered'>{sup.created_date}</td>
+                <td className='centered'>{sup.updated_date}</td>
                 <td className='centered'>
                   <>
                   <LiaIcons.LiaEdit onClick={()=> edit(sup.sup_id)} size={24} color='black'/>

@@ -92,7 +92,7 @@ const ProductCategory = () => {
           <input
             type='text'
             className='search-input'
-            placeholder='Search by product category name'
+            placeholder='Search here...'
             value={search}
             onChange={(e) => setsearch(e.target.value)}
           />

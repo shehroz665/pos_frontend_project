@@ -80,6 +80,7 @@ const AchiveSupplier = () => {
               <th className='centered'>Contact</th>
               <th className='centered'>Description</th>
               <th className='centered'>Status</th>
+              <th className='centered'>Updated Date</th>
               <th className='centered'>Actions</th>
             </tr>
           </thead>
@@ -97,6 +98,7 @@ const AchiveSupplier = () => {
                 <td className={`centered ${sup.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {"Deleted"}
                 </td>
+                <td className='centered'>{sup.updated_date}</td>
                 <td className='centered'>
                   <>
                   <TbIcons.TbRestore onClick={()=> restoreOrDelete(sup.sup_id,1)} size={21} color='#008000'/>
