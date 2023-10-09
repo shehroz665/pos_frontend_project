@@ -79,12 +79,13 @@ const ArchiveProductCategory = () => {
               <th>Sr.</th>
               <th className='centered'>Name</th>
               <th className='centered'>Status</th>
+              <th className='centered'>Updated Date</th>
               <th className='centered'>Actions</th>
             </tr>
           </thead>
           <tbody>
            {category.length===0? <tr>
-      <td colSpan="4" className="centered">
+      <td colSpan="5" className="centered">
         No records found
       </td>
     </tr>  :(category.map((cat) => (
@@ -94,6 +95,7 @@ const ArchiveProductCategory = () => {
                 <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                   {"Deleted"}
                 </td>
+                <td className='centered'>{cat.updated_date}</td>
                 <td className='centered'>
                   <>
                   <TbIcons.TbRestore onClick={()=> restoreOrDelete(cat.cat_id,1)} size={21} color='#008000'/>

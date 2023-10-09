@@ -105,12 +105,14 @@ const ProductCategory = () => {
                 <th>Sr.</th>
                 <th className='centered'>Name</th>
                 <th className='centered'>Status</th>
+                <th className='centered'>Created Date</th>
+                <th className='centered'>Updated Date</th>
                 <th className='centered'>Actions</th>
               </tr>
             </thead>
             <tbody>
               {category.length === 0 ? <tr>
-                <td colSpan="4" className="centered">
+                <td colSpan="6" className="centered">
                   No records found
                 </td>
               </tr> : (category.map((cat) => (
@@ -120,6 +122,8 @@ const ProductCategory = () => {
                   <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
                     {cat.status === 1 ? "Active" : "Deactivated"}
                   </td>
+                  <td className='centered'>{cat.created_date}</td>
+                  <td className='centered'>{cat.updated_date}</td>
                   <td className='centered'>
                     <>
                       <LiaIcons.LiaEdit onClick={() => edit(cat.cat_id)} size={24} color='black' />
