@@ -18,6 +18,7 @@ const Sales = () => {
   useEffect(() => {
     //console.log('date',formatDateToDDMMYYYY(date));
     const formatedDate =formatDateToDDMMYYYY(date);
+    console.log('formatted Date',formatedDate)
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${formatedDate}`;
     const config = {
       headers: {
@@ -130,10 +131,10 @@ const Sales = () => {
           </thead>
           <tbody>
            {invoice.length===0? <tr>
-      <td colSpan="8" className="centered">
+      <td colSpan="9" className="centered">
         No records found
       </td>
-    </tr>  :(invoice.map((inv,index) => (
+    </tr>  :(invoice.map((inv) => (
               <tr key={inv.invoice_id}>
                 <td>{inv.invoice_id}</td>
                 <td className='centered'>{inv.cust_name}</td>

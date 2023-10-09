@@ -91,7 +91,7 @@ const Credit = () => {
               <th className='centered'>Received Amount</th>
               <th className='centered'>Remaining</th> 
               <th className='centered'>Total Quantity</th>
-              <th className='centered'>Date</th>                       
+              <th className='centered'>Created Date</th>                       
               <th className='centered'>Actions</th>
             </tr>
           </thead>
@@ -110,7 +110,7 @@ const Credit = () => {
                 <td className='centered'>Rs {inv.borrow_amount}</td>
                 <td className='centered'>Rs {inv.total_price-inv.borrow_amount}</td>
                 <td className='centered'>{inv.total_quantity}</td>
-                <td className='centered'>{inv.updated_at}</td>
+                <td className='centered'>{inv.created_date}</td>
                 <td className='centered'>
                   <FcIcons.FcCheckmark onClick={()=> updateCredit(inv)}
                    size={24}/></td>

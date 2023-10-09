@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
               </View>
               <View style={styles.section}>
                 <Text style={styles.textWithPadding}>Invoice Number: {'I#'+id}</Text>
-                <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_at}</Text>
+                <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_date}</Text>
               </View>
               <View style={styles.section}>
                 <Text style={styles.textWithPadding}>Shop Name: Malik Bag House</Text>

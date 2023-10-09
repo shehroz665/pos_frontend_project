@@ -69,13 +69,14 @@ const Invoice = () => {
               <th className='centered'>Total Products</th> 
               <th className='centered'>Total Price</th> 
               <th className='centered'>Total Quantity</th>
-              <th className='centered'>Date</th>                       
+              <th className='centered'>Created Date</th>
+                <th className='centered'>Updated Date</th>                      
               <th className='centered'>Actions</th>
             </tr>
           </thead>
           <tbody>
            {invoice.length===0? <tr>
-      <td colSpan="8" className="centered">
+      <td colSpan="9" className="centered">
         No records found
       </td>
     </tr>  :(invoice.map((inv) => (
@@ -87,7 +88,8 @@ const Invoice = () => {
                 <td className='centered'>Rs {inv.total_price}</td>
                 <td className='centered'>{inv.total_quantity}</td>
                 {/* <td className='centered'>{inv.created_at}</td> */}
-                <td className='centered'>{inv.updated_at}</td>
+                <td className='centered'>{inv.created_date}</td>
+                  <td className='centered'>{inv.updated_date}</td>
                 <td className='centered'>
                   <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
               </tr>
