@@ -18,13 +18,6 @@ const Statistics = () => {
     { name: '', sales: 0, },
     { name: '', sales: 0, },
     { name: '', sales: 0, },]);
-  const data = [
-    { name: 'Category A', sales: 4000, },
-    { name: 'Category B', sales: 3000, },
-    { name: 'Category C', sales: 2000, },
-    { name: 'Category D', sales: 2780, },
-    { name: 'Category E', sales: 1890, },
-  ];
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/statistics`;
     const config = {
@@ -75,7 +68,7 @@ const Statistics = () => {
       </div>
       <div className='statistics-container'>
         <div className="statistics-graph-container">
-          <BarChart width={600} height={400} data={graphdata}>
+          <BarChart width={700} height={400} data={graphdata}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -84,9 +77,7 @@ const Statistics = () => {
             <Bar dataKey="sales" fill="#022888" />
           </BarChart>
         </div>
-        <div className="statistics-graph-container">
-          <h1>others</h1>
-        </div>
+
       </div>
     </div>
   );
