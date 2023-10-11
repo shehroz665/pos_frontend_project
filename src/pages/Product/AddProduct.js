@@ -31,11 +31,11 @@ const AddProduct = () => {
       const response = await axios.get(apiUrl, config);
       if (response.status === 200) {
         const responseData = response.data.data;
-        console.log('dropdown->',responseData)
+        //console.log('dropdown->',responseData)
         setsupplierArray(responseData.suppliers);
         setcategoryArray(responseData.category);
         setsizeArray(responseData.sizes);
-        console.log('sup_id-> ',responseData.suppliers[0].sup_id,'cat_id-> ',responseData.category[0].cat_id);
+        //console.log('sup_id-> ',responseData.suppliers[0].sup_id,'cat_id-> ',responseData.category[0].cat_id);
         setselectedSupplier(responseData.suppliers[0].sup_id);
         setSelectedCategory(responseData.category[0].cat_id);
         setselectedSize(responseData.sizes[0].size_id)
@@ -81,8 +81,8 @@ const AddProduct = () => {
     axios
       .post(apiUrl, data, config)
       .then((response) => {
-        console.log('API Response:', response.data);
-          showSuccessAlert('Product added successfully');
+        //console.log('API Response:', response.data);
+          showSuccessAlert('Product '+response.data.data.prod_name+' added successfully');
           setproductName('');
           setproductCost(0);
           setproductSellingPrice(0);

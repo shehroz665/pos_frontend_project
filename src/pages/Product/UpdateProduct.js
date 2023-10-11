@@ -44,7 +44,7 @@ const UpdateProduct = () => {
             console.error('Error fetching product data:', error);
           });
        
-      }, [token]);
+      }, [token,id]);
     const handleSubmit = (e) => {
         e.preventDefault();
         const apiUrl = `http://127.0.0.1:8000/api/product/update/${id}`;
@@ -79,8 +79,8 @@ const UpdateProduct = () => {
         axios
           .post(apiUrl, data, config)
           .then((response) => {
-            console.log('API Response:', response.data);
-              showSuccessAlert('Product updated successfully');
+           // console.log('API Response:', response.data);
+              showSuccessAlert('Product '+response.data.data.prod_name+' updated successfully');
               setproductName('');
               setproductCost(0);
               setproductSellingPrice(0);
@@ -94,7 +94,7 @@ const UpdateProduct = () => {
       };
       const getDataFromApi = async (previousApiResponse) => {
         try {
-            console.log('prev data',previousApiResponse.sup_name);
+           // console.log('prev data',previousApiResponse.sup_name);
           const apiUrl = 'http://127.0.0.1:8000/api/product/dropdown';
           const config = {
             headers: {

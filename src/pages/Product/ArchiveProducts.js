@@ -53,10 +53,10 @@ const ArchiveProducts = () => {
     try {
       const response = await axios.post(apiUrl,data, configs);
       if(status===1){
-        showSuccessAlert('Product restored successfully');
+        showSuccessAlert('Product '+response.data.data.prod_name+' restored successfully');
       }
       else{
-        showSuccessAlert('Product deleted successfully');
+        showSuccessAlert('Product '+response.data.data.prod_name+' deleted successfully');
       }
 
       setrecallApi((prev) => !prev);

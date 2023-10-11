@@ -31,11 +31,11 @@ const Products = () => {
     };
     axios.get(apiUrl, config)
       .then((response) => {
-        console.log(response.data.data.data.length)
+        //console.log(response.data.data.data.length)
 
         setproducts(response.data.data.data);
         settotalPages(response.data.data.last_page);
-        console.log('products-> ', response.data.data.data);
+        //console.log('products-> ', response.data.data.data);
         const initialVisibility = new Array(response.data.data.data.length).fill(false);
         setCostVisible(initialVisibility);
       })
@@ -58,8 +58,8 @@ const Products = () => {
     };
     try {
       const response = await axios.delete(apiUrl, configs);
-      console.log('Product category deleted:', response.data);
-      showSuccessAlert('Product deleted successfully');
+      //console.log('Product category deleted:', response.data);
+      showSuccessAlert('Product '+response.data.data.prod_name+' deleted successfully');
       setrecallApi((prev) => !prev);
     } catch (error) {
       console.error('Error deleting product category:', error);
@@ -67,14 +67,14 @@ const Products = () => {
     }
   };
   const edit = (id) => {
-    console.log('edit', id);
+   // console.log('edit', id);
     const propsToPass = {
       id: id,
     };
     navigate('/product/update', { state: propsToPass });
   }
   const handleSwitchToggle = async (id) => {
-    console.log('index', id, 'token', token)
+    //console.log('index', id, 'token', token)
     const apiUrl = `http://127.0.0.1:8000/api/product/changeStatus/${id}`;
     const configs = {
       headers: {
@@ -84,7 +84,7 @@ const Products = () => {
     };
     try {
       const response = await axios.post(apiUrl, [], configs);
-      showSuccessAlert('Product status updated successfully');
+      showSuccessAlert('Product status '+response.data.data.prod_name+' updated successfully');
       setrecallApi((prev) => !prev);
     } catch (error) {
       console.error('Error updating product category status:', error);

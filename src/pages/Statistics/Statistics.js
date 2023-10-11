@@ -6,7 +6,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 const Statistics = () => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const [recallApi, setrecallApi] = useState(false);
   const [totalSuppliers, settotalSuppliers] = useState(0);
   const [totalProducts, settotalProducts] = useState(0);
   const [totoalSalesToday, settotoalSalesToday] = useState(0);
@@ -28,7 +27,7 @@ const Statistics = () => {
     };
     axios.get(apiUrl, config)
       .then((response) => {
-        console.log(response.data.data);
+        //console.log(response.data.data);
         const responseData = response.data.data;
         settotoalSalesToday(responseData.sales.total_price_sum);
         settotalStock(parseInt(responseData.totalStock));
@@ -41,7 +40,7 @@ const Statistics = () => {
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
-  }, [recallApi, token]);
+  }, [token]);
   return (
     <div className='home'>
       <div className='statistics-container'>
