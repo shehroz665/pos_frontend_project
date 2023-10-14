@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 import * as TbIcons from 'react-icons/tb';
-
+import ClipLoader from "react-spinners/ClipLoader";
 const Invoice = () => {
   const navigate = useNavigate();
   const [invoice, setinvoice] = useState([]);
@@ -15,6 +15,7 @@ const Invoice = () => {
   const [totalPages, settotalPages] = useState(0);
   const [search, setsearch] = useState('');
   const itemsPerPage = 10;
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
     //console.log('url',apiUrl)
@@ -31,9 +32,11 @@ const Invoice = () => {
         // console.log('last->page',response.data.data);
         settotalPages(response.data.data.last_page);
         // console.log('products-> ',response.data.data.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
+        setLoading(false);
       });
   }, [currentPage,token,search]);
   const edit=(id)=> {
@@ -44,66 +47,82 @@ const Invoice = () => {
     navigate('/invoice/print', { state: propsToPass });
   }
   const handlePageChange = (newPage) => {
+    setLoading(true);
     setCurrentPage(newPage);
+
   };
   return (
-    <>
-    <Banner title={"View Invoices"}/>
-    <div className='home'>
-      <div className='search-container'>
-            <input
-              type='text'
-              className='search-input'
-              placeholder='Search here...'
-              value={search}
-              onChange={(e) => setsearch(e.target.value)}
-            />
+    <div>
+      {
+        loading?
+        <div>
+        <ClipLoader
+          color={'#022888'}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          className="centered-loader"
+        /></div>
+        :(    <div>
+          <Banner title={"View Invoices"}/>
+          <div className='home'>
+            <div className='search-container'>
+                  <input
+                    type='text'
+                    className='search-input'
+                    placeholder='Search here...'
+                    value={search}
+                    onChange={(e) => setsearch(e.target.value)}
+                  />
+                </div>
+            <div className='table-container'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sr.</th>
+                    <th className='centered'>Customer Name</th>
+                    <th className='centered'>Customer Phone</th>
+                    <th className='centered'>Total Products</th> 
+                    <th className='centered'>Total Price</th> 
+                    <th className='centered'>Total Quantity</th>
+                    <th className='centered'>Created Date</th>
+                      <th className='centered'>Updated Date</th>                      
+                    <th className='centered'>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 {invoice.length===0? <tr>
+            <td colSpan="9" className="centered">
+              No records found
+            </td>
+          </tr>  :(invoice.map((inv) => (
+                    <tr key={inv.invoice_id}>
+                      <td>{inv.invoice_id}</td>
+                      <td className='centered'>{inv.cust_name}</td>
+                      <td className='centered'>{inv.cust_number}</td>
+                      <td className='centered'>{inv.total_products}</td>
+                      <td className='centered'>Rs {inv.total_price}</td>
+                      <td className='centered'>{inv.total_quantity}</td>
+                      {/* <td className='centered'>{inv.created_at}</td> */}
+                      <td className='centered'>{inv.created_date}</td>
+                        <td className='centered'>{inv.updated_date}</td>
+                      <td className='centered'>
+                        <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
+                    </tr>
+                  )))   } 
+                </tbody>
+              </table>
+            </div>
+            <ResponsivePagination
+                current={currentPage}
+                total={totalPages}
+                onPageChange={handlePageChange}
+              />
           </div>
-      <div className='table-container'>
-        <table>
-          <thead>
-            <tr>
-              <th>Sr.</th>
-              <th className='centered'>Customer Name</th>
-              <th className='centered'>Customer Phone</th>
-              <th className='centered'>Total Products</th> 
-              <th className='centered'>Total Price</th> 
-              <th className='centered'>Total Quantity</th>
-              <th className='centered'>Created Date</th>
-                <th className='centered'>Updated Date</th>                      
-              <th className='centered'>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-           {invoice.length===0? <tr>
-      <td colSpan="9" className="centered">
-        No records found
-      </td>
-    </tr>  :(invoice.map((inv) => (
-              <tr key={inv.invoice_id}>
-                <td>{inv.invoice_id}</td>
-                <td className='centered'>{inv.cust_name}</td>
-                <td className='centered'>{inv.cust_number}</td>
-                <td className='centered'>{inv.total_products}</td>
-                <td className='centered'>Rs {inv.total_price}</td>
-                <td className='centered'>{inv.total_quantity}</td>
-                {/* <td className='centered'>{inv.created_at}</td> */}
-                <td className='centered'>{inv.created_date}</td>
-                  <td className='centered'>{inv.updated_date}</td>
-                <td className='centered'>
-                  <TbIcons.TbFileInvoice onClick={()=> edit(inv.invoice_id)} size={24} color='black'/></td>
-              </tr>
-            )))   } 
-          </tbody>
-        </table>
-      </div>
-      <ResponsivePagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={handlePageChange}
-        />
+          </div>)
+      }
     </div>
-    </>
   )
 }
 

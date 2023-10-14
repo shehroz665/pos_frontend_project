@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import ClipLoader from "react-spinners/ClipLoader";
 const styles = StyleSheet.create({
     page: {
       fontFamily: 'Helvetica',
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     const token = localStorage.getItem('token');
     const [printContent, setprintContent] = useState([]);
     const [products, setproducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
       const apiUrl = `http://127.0.0.1:8000/api/invoice/${id}`;
       const config = {
@@ -70,63 +72,80 @@ const styles = StyleSheet.create({
           // console.log('API Response:', response.data.data);
           setprintContent(response.data.data);
           setproducts(response.data.data.products);
-          console.log(response.data.data.products);
+         // console.log(response.data.data.products);
+         setLoading(false);
         })
         .catch((error) => {
           console.error('API Error:', error);
+          setLoading(false);
         });
     }, [id, token]);
     
     return (
       <div className='home'>
-        <PDFViewer width={500} height={600}>
-          <Document>
-            <Page size="legal" style={styles.page}>
-              <View style={styles.header}>
-                <Text>Invoice</Text>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.textWithPadding}>Invoice Number: {'I#'+id}</Text>
-                <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_date}</Text>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.textWithPadding}>Shop Name: Malik Bag House</Text>
-                <Text style={styles.textWithPadding}>Address: P-26,Regal Road,38850, Faisalabad, Pakistan</Text>
-                <Text style={styles.textWithPadding}>Contacts: 0300-6643047, 0304-1668462</Text>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.textWithPadding}>Customer Details:</Text>
-                <Text style={styles.textWithPadding}>Name: {printContent.cust_name}</Text>
-                <Text style={styles.textWithPadding}>Number: {"0"+printContent.cust_number}</Text>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.textWithPadding}>Products:</Text>
-                <View style={styles.table}>
-                  <View style={[styles.tableRow, styles.tableHeader]}>
-                  <Text style={[styles.tableCell,styles.textWithPadding]}>Sr#</Text>
-                    <Text style={[styles.tableCell,styles.textWithPadding]}>Description</Text>
-                    <Text style={[styles.tableCell,styles.textWithPadding]}>Quantity</Text>
-                    <Text style={[styles.tableCell,styles.textWithPadding]}>Price</Text>
+        {
+          loading? 
+          <div>
+          <ClipLoader
+            color={'#022888'}
+            loading={loading}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            className="centered-loader"
+          /></div>
+          : (        <div>
+            <PDFViewer width={500} height={600}>
+              <Document>
+                <Page size="legal" style={styles.page}>
+                  <View style={styles.header}>
+                    <Text>Invoice</Text>
                   </View>
-                  {products.map((product, index) => (
-                    <View key={index} style={styles.tableRow}>
-                      <Text style={[styles.tableCell,styles.textWithPadding]}>{index+1}</Text>
-                      <Text style={[styles.tableCell,styles.textWithPadding]}>{product.prod_name}</Text>
-                      <Text style={[styles.tableCell,styles.textWithPadding]}>{product.quantity}</Text>
-                      <Text style={[styles.tableCell,styles.textWithPadding]}>Rs {parseInt(product.prod_selling_price)}</Text>
+                  <View style={styles.section}>
+                    <Text style={styles.textWithPadding}>Invoice Number: {'I#'+id}</Text>
+                    <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_date}</Text>
+                  </View>
+                  <View style={styles.section}>
+                    <Text style={styles.textWithPadding}>Shop Name: Malik Bag House</Text>
+                    <Text style={styles.textWithPadding}>Address: P-26,Regal Road,38850, Faisalabad, Pakistan</Text>
+                    <Text style={styles.textWithPadding}>Contacts: 0300-6643047, 0304-1668462</Text>
+                  </View>
+                  <View style={styles.section}>
+                    <Text style={styles.textWithPadding}>Customer Details:</Text>
+                    <Text style={styles.textWithPadding}>Name: {printContent.cust_name}</Text>
+                    <Text style={styles.textWithPadding}>Number: {"0"+printContent.cust_number}</Text>
+                  </View>
+                  <View style={styles.section}>
+                    <Text style={styles.textWithPadding}>Products:</Text>
+                    <View style={styles.table}>
+                      <View style={[styles.tableRow, styles.tableHeader]}>
+                      <Text style={[styles.tableCell,styles.textWithPadding]}>Sr#</Text>
+                        <Text style={[styles.tableCell,styles.textWithPadding]}>Description</Text>
+                        <Text style={[styles.tableCell,styles.textWithPadding]}>Quantity</Text>
+                        <Text style={[styles.tableCell,styles.textWithPadding]}>Price</Text>
+                      </View>
+                      {products.map((product, index) => (
+                        <View key={index} style={styles.tableRow}>
+                          <Text style={[styles.tableCell,styles.textWithPadding]}>{index+1}</Text>
+                          <Text style={[styles.tableCell,styles.textWithPadding]}>{product.prod_name}</Text>
+                          <Text style={[styles.tableCell,styles.textWithPadding]}>{product.quantity}</Text>
+                          <Text style={[styles.tableCell,styles.textWithPadding]}>Rs {parseInt(product.prod_selling_price)}</Text>
+                        </View>
+                      ))}
                     </View>
-                  ))}
-                </View>
-              </View>
-              <View style={styles.section}>
-                <Text style={styles.textWithPadding}>Total Products: {printContent.total_products}</Text>
-                <Text style={styles.textWithPadding}>Total Quantity: {printContent.total_quantity}</Text>
-                <Text style={styles.textWithPadding}>Total : Rs {printContent.total_price}</Text>
+                  </View>
+                  <View style={styles.section}>
+                    <Text style={styles.textWithPadding}>Total Products: {printContent.total_products}</Text>
+                    <Text style={styles.textWithPadding}>Total Quantity: {printContent.total_quantity}</Text>
+                    <Text style={styles.textWithPadding}>Total : Rs {printContent.total_price}</Text>
+    
+                  </View>
+                </Page>
+              </Document>
+            </PDFViewer>
+            </div>)
+        }
 
-              </View>
-            </Page>
-          </Document>
-        </PDFViewer>
       </div>
     );
   };
