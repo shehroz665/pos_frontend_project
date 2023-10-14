@@ -22,7 +22,7 @@ const Logout = () => {
         .then((response) => {
           if (response.status === 200) {
             showSuccessAlert('Logout successfully');
-            console.log("logout...!");
+            //console.log("logout...!");
             setlogout(true);
              navigate('/');
           }
