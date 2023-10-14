@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
       marginBottom: 3,
       fontSize: 13 
     },
+    boldText: {
+      fontWeight: 'bold',
+    },
   });
   const GenerateInvoice = () => {
     const location = useLocation();
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
                     <Text>Invoice</Text>
                   </View>
                   <View style={styles.section}>
-                    <Text style={styles.textWithPadding}>Invoice Number: {'I#'+id}</Text>
+                    <Text style={styles.textWithPadding}>Invoice Number: {id}</Text>
                     <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_date}</Text>
                   </View>
                   <View style={styles.section}>

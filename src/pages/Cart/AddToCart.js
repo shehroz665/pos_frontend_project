@@ -166,7 +166,7 @@ const AddToCart = () => {
       });
   }, [token, search, recallApi]);
   useEffect(() => {
-    setselectedPaymentMethod(paymentMethods[0].name);
+    // setselectedPaymentMethod(paymentMethods[0].name);
     setTotalProducts(selectedItems.length);
     setTotalPrice(selectedItems.reduce((total, item) => {
       return total + item.quantity * parseFloat(item.prod_selling_price);
