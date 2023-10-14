@@ -177,4 +177,13 @@
   background-color: #0056b3;
 }
 
-/* Adjust the spacing and styling as needed */
+.centered-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 250px;
+  margin-left: 650px; */
+  margin: 800px;
+}
+

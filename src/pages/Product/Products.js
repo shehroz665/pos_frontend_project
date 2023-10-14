@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Products = () => {
   const [totalPages, settotalPages] = useState(0);
   const [search, setsearch] = useState('');
   const itemsPerPage = 10;
+  let [loading, setLoading] = useState(true);
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/product?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
     const config = {
@@ -38,6 +40,7 @@ const Products = () => {
         //console.log('products-> ', response.data.data.data);
         const initialVisibility = new Array(response.data.data.data.length).fill(false);
         setCostVisible(initialVisibility);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
@@ -95,80 +98,98 @@ const Products = () => {
     setCurrentPage(newPage);
   };
   return (
-    <>
-      <Banner title={"View Products"} />
-      <div className='home'>
-        <div className='search-container'>
-          <input
-            type='text'
-            className='search-input'
-            placeholder='Search here...'
-            value={search}
-            onChange={(e) => setsearch(e.target.value)}
-          />
-        </div>
-        <div className='table-container'>
-          <table>
-            <thead>
-              <tr>
-                <th>Sr.</th>
-                <th className='centered'>Name</th>
-                <th className='centered'>Category</th>
-                <th className='centered'>Supplier</th>
-                <th className='centered'>Cost</th>
-                <th className='centered'>Selling Price</th>
-                <th className='centered'>Size</th>
-                <th className='centered'>Quantity</th>
-                <th className='centered'>Status</th>
-                <th className='centered'>Updated</th>
-                <th className='centered'>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.length === 0 ? <tr>
-                <td colSpan="11" className="centered">
-                  No records found
-                </td>
-              </tr> : (products.map((prod, index) => (
-                <tr key={prod.prod_id}>
-                  <td>{prod.prod_id}</td>
-                  <td className='centered'>{prod.prod_name}</td>
-                  <td className='centered'>{prod.cat_name}</td>
-                  <td className='centered'>{prod.sup_name}</td>
-                  <td className='centered'>{costVisible[index] ? parseFloat(prod.prod_cost).toFixed(0) : '*'.repeat(parseFloat(prod.prod_cost).toFixed(0).length)}</td>
-                  <td className='centered'>{parseFloat(prod.prod_selling_price).toFixed(0)}</td>
-                  <td className='centered'>{prod.size_name}</td>
-                  <td className='centered'>{parseFloat(prod.prod_quantity).toFixed(0)}</td>
-                  <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
-                    {prod.status === 1 ? "Active" : "Deactivated"}
-                  </td>
-                  <td className='centered'>{prod.updated_date}</td>
-                  <td className='centered'>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                      <AiIcons.AiFillEyeInvisible onClick={() => toggleCostVisibility(index)} size={24} color='black' />
-                      <LiaIcons.LiaEdit onClick={() => edit(prod.prod_id)} size={24} color='black' />
-                      <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={() => handleDelete(prod.prod_id)} />
-                      <Switch
-                        width={42}
-                        height={20}
-                        onChange={() => handleSwitchToggle(prod.prod_id)}
-                        checked={prod.status === 1 ? true : false}
-                        offColor="#CE2020"
-                        onColor="#008000"
-                      />
-                    </div></td>
-                </tr>
-              )))}
-            </tbody>
-          </table>
-        </div>
-        <ResponsivePagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
-    </>
+
+    <div>
+    {
+      loading ? 
+      <div>
+      <ClipLoader
+        color={'#022888'}
+        loading={loading}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        className="centered-loader"
+      /></div>
+      :(
+        <>
+        <Banner title={"View Products"} />
+          <div className='home'>
+            <div className='search-container'>
+              <input
+                type='text'
+                className='search-input'
+                placeholder='Search here...'
+                value={search}
+                onChange={(e) => setsearch(e.target.value)}
+              />
+            </div>
+            <div className='table-container'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sr.</th>
+                    <th className='centered'>Name</th>
+                    <th className='centered'>Category</th>
+                    <th className='centered'>Supplier</th>
+                    <th className='centered'>Cost</th>
+                    <th className='centered'>Selling Price</th>
+                    <th className='centered'>Size</th>
+                    <th className='centered'>Quantity</th>
+                    <th className='centered'>Status</th>
+                    <th className='centered'>Updated</th>
+                    <th className='centered'>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.length === 0 ? <tr>
+                    <td colSpan="11" className="centered">
+                      No records found
+                    </td>
+                  </tr> : (products.map((prod, index) => (
+                    <tr key={prod.prod_id}>
+                      <td>{prod.prod_id}</td>
+                      <td className='centered'>{prod.prod_name}</td>
+                      <td className='centered'>{prod.cat_name}</td>
+                      <td className='centered'>{prod.sup_name}</td>
+                      <td className='centered'>{costVisible[index] ? parseFloat(prod.prod_cost).toFixed(0) : '*'.repeat(parseFloat(prod.prod_cost).toFixed(0).length)}</td>
+                      <td className='centered'>{parseFloat(prod.prod_selling_price).toFixed(0)}</td>
+                      <td className='centered'>{prod.size_name}</td>
+                      <td className='centered'>{parseFloat(prod.prod_quantity).toFixed(0)}</td>
+                      <td className={`centered ${prod.status === 1 ? 'status-active' : 'status-deactivated'}`}>
+                        {prod.status === 1 ? "Active" : "Deactivated"}
+                      </td>
+                      <td className='centered'>{prod.updated_date}</td>
+                      <td className='centered'>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                          <AiIcons.AiFillEyeInvisible onClick={() => toggleCostVisibility(index)} size={24} color='black' />
+                          <LiaIcons.LiaEdit onClick={() => edit(prod.prod_id)} size={24} color='black' />
+                          <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={() => handleDelete(prod.prod_id)} />
+                          <Switch
+                            width={42}
+                            height={20}
+                            onChange={() => handleSwitchToggle(prod.prod_id)}
+                            checked={prod.status === 1 ? true : false}
+                            offColor="#CE2020"
+                            onColor="#008000"
+                          />
+                        </div></td>
+                    </tr>
+                  )))}
+                </tbody>
+              </table>
+            </div>
+            <ResponsivePagination
+              current={currentPage}
+              total={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </>
+      )
+    }
+
+    </div>
   )
 }
 

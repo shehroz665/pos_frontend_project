@@ -4,6 +4,8 @@ import axios from 'axios';
 import { showErrorAlert, showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Banner from '../Banner';
+import { useCallback } from 'react';
+import ClipLoader from "react-spinners/ClipLoader";
 const AddProduct = () => {
   const [productCost, setproductCost] = useState(0);
   const [productSellingPrice, setproductSellingPrice] = useState(0);
@@ -16,10 +18,8 @@ const AddProduct = () => {
   const [sizeArray, setsizeArray] = useState([])
   const [productName, setproductName] = useState('');
   const token = localStorage.getItem('token');
-  useEffect(()=>{
-    getDataFromApi();
-  },[token])
-  const getDataFromApi = async () => {
+  const [loading, setLoading] = useState(true);
+  const getDataFromApi = useCallback(async () => {
     try {
       const apiUrl = 'http://127.0.0.1:8000/api/product/dropdown';
       const config = {
@@ -38,14 +38,19 @@ const AddProduct = () => {
         //console.log('sup_id-> ',responseData.suppliers[0].sup_id,'cat_id-> ',responseData.category[0].cat_id);
         setselectedSupplier(responseData.suppliers[0].sup_id);
         setSelectedCategory(responseData.category[0].cat_id);
-        setselectedSize(responseData.sizes[0].size_id)
+        setselectedSize(responseData.sizes[0].size_id);
+        setLoading(false);
       } else {
         console.error('Unexpected response status:', response.status);
       }
     } catch (error) {
       console.error('Error fetching product data:', error);
     }
-  };
+  },[token]);
+  useEffect(()=>{
+    getDataFromApi();
+  },[token,getDataFromApi])
+
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,112 +101,127 @@ const AddProduct = () => {
  
   };
   return (
-    <>
-      <Banner title={"Add Product"} />
-      <div className="home">
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <div className='form-group-div'>
-              <label htmlFor="productName">Product Name:</label>
-              <input
-                type="text"
-                id="productName"
-                name="productName"
-                value={productName}
-                onChange={(e) => setproductName(e.target.value)}
-                required
-              />
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="productQuantity">Product Quantity:</label>
-              <input
-                type="text"
-                id="productQuantity"
-                name="productQuantity"
-                value={productQuantity}
-                onChange={(e) => setproductQuantity(e.target.value)}
-                required
-              />
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="category">Product Category:</label>
-              <select
-                id="category"
-                name="category"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                required
-              >
-                {categoryArray.map((category) => (
-                  <option key={category.cat_id} value={category.cat_id}>
-                    {category.cat_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="supplier">Product Supplier:</label>
-              <select
-                id="supplier"
-                name="supplier"
-                value={selectedSupplier}
-                onChange={(e) => setselectedSupplier(e.target.value)}
-                required
-              >
-                {supplierArray.map((sup) => (
-                  <option key={sup.sup_id} value={sup.sup_id}>
-                    {sup.sup_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="productSize">Product Size:</label>
-              <select
-                id="productSize"
-                name="productSize"
-                value={selectedSize}
-                onChange={(e) => setselectedSize(e.target.value)}
-                required
-              >
-                {sizeArray.map((size) => (
-                  <option key={size.size_id} value={size.size_id}>
-                    {size.size_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="productCost">Product Cost:</label>
-              <input
-                type="text"
-                id="productCost"
-                name="productCost"
-                maxLength={10}
-                minLength={2}
-                value={productCost}
-                onChange={(e) => setproductCost(e.target.value)}
-                required
-              />
-            </div>
-            <div className='form-group-div'>
-              <label htmlFor="productSellingPrice">Product Selling Price:</label>
-              <input
-                type="text"
-                id="productSellingPrice"
-                name="productSellingPrice"
-                maxLength={10}
-                minLength={2}
-                value={productSellingPrice}
-                onChange={(e) => setproductSellingPrice(e.target.value)}
-                required
-              />
-            </div>
+    <div>
+      {
+        loading ? 
+        <div>
+        <ClipLoader
+          color={'#022888'}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          className="centered-loader"
+        /></div>
+        :(    <div>
+          <Banner title={"Add Product"} />
+          <div className="home">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <div className='form-group-div'>
+                  <label htmlFor="productName">Product Name:</label>
+                  <input
+                    type="text"
+                    id="productName"
+                    name="productName"
+                    value={productName}
+                    onChange={(e) => setproductName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="productQuantity">Product Quantity:</label>
+                  <input
+                    type="text"
+                    id="productQuantity"
+                    name="productQuantity"
+                    value={productQuantity}
+                    onChange={(e) => setproductQuantity(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="category">Product Category:</label>
+                  <select
+                    id="category"
+                    name="category"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    required
+                  >
+                    {categoryArray.map((category) => (
+                      <option key={category.cat_id} value={category.cat_id}>
+                        {category.cat_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="supplier">Product Supplier:</label>
+                  <select
+                    id="supplier"
+                    name="supplier"
+                    value={selectedSupplier}
+                    onChange={(e) => setselectedSupplier(e.target.value)}
+                    required
+                  >
+                    {supplierArray.map((sup) => (
+                      <option key={sup.sup_id} value={sup.sup_id}>
+                        {sup.sup_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="productSize">Product Size:</label>
+                  <select
+                    id="productSize"
+                    name="productSize"
+                    value={selectedSize}
+                    onChange={(e) => setselectedSize(e.target.value)}
+                    required
+                  >
+                    {sizeArray.map((size) => (
+                      <option key={size.size_id} value={size.size_id}>
+                        {size.size_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="productCost">Product Cost:</label>
+                  <input
+                    type="text"
+                    id="productCost"
+                    name="productCost"
+                    maxLength={10}
+                    minLength={2}
+                    value={productCost}
+                    onChange={(e) => setproductCost(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className='form-group-div'>
+                  <label htmlFor="productSellingPrice">Product Selling Price:</label>
+                  <input
+                    type="text"
+                    id="productSellingPrice"
+                    name="productSellingPrice"
+                    maxLength={10}
+                    minLength={2}
+                    value={productSellingPrice}
+                    onChange={(e) => setproductSellingPrice(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <button type="submit">Add Product</button>
+            </form>
           </div>
-          <button type="submit">Add Product</button>
-        </form>
-      </div>
-    </>
+        </div>)
+      }
+    </div>
+
 
   )
 }
