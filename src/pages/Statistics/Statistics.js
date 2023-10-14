@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import "../ProductCategory/ProductCategory.css";
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import ClipLoader from "react-spinners/ClipLoader";
 const Statistics = () => {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Statistics = () => {
     { name: '', sales: 0, },
     { name: '', sales: 0, },
     { name: '', sales: 0, },]);
+    let [loading, setLoading] = useState(true);
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/statistics`;
     const config = {
@@ -35,6 +37,8 @@ const Statistics = () => {
         settotalCategory(responseData.categories);
         settotalSuppliers(responseData.suppliers);
         setgraphdata(responseData.graphStatistics);
+        setLoading(false);
+        
 
       })
       .catch((error) => {
@@ -43,6 +47,17 @@ const Statistics = () => {
   }, [token]);
   return (
     <div className='home'>
+      {
+        loading ? <div>
+      <ClipLoader
+        color={'#022888'}
+        loading={loading}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        className="centered-loader"
+      /></div> : (
+      <>
       <div className='statistics-container'>
         <Link to="/sales" className="statistic-box" onClick={() => navigate('/sales')}>
           <h2>Today Sales</h2>
@@ -78,6 +93,11 @@ const Statistics = () => {
         </div>
 
       </div>
+      </>
+
+      )
+      }
+
     </div>
   );
 };
