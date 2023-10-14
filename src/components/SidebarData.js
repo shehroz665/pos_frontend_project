@@ -1,5 +1,5 @@
 import React from 'react';
-import * as AiIcons from 'react-icons/ai';
+//import * as AiIcons from 'react-icons/ai';
 import * as RiIcons from 'react-icons/ri';
 import * as BiIcons from 'react-icons/bi';
 import * as BsIcons from 'react-icons/bs';
@@ -115,13 +115,13 @@ export const SidebarData = [
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
   },
-  {
-    title: 'Settings',
-    path: '/settings',
-    icon: <AiIcons.AiOutlineSetting />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-  },
+  // {
+  //   title: 'Settings',
+  //   path: '/settings',
+  //   icon: <AiIcons.AiOutlineSetting />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill />,
+  // },
   {
     title: 'Logout',
     path: '/logout',
