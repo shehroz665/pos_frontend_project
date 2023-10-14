@@ -16,9 +16,9 @@ const Sales = () => {
   const [date, setDate] = useState(formatDate(new Date()));
   const [salesCalculations, setsalesCalculations] = useState({});
   useEffect(() => {
-    console.log('input date', date);
+    // console.log('input date', date);
     const formatedDate = formatDateToDDMMYYYY(date);
-    console.log('formatted Date', formatedDate)
+    // console.log('formatted Date', formatedDate)
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${formatedDate}`;
     const config = {
       headers: {
@@ -36,7 +36,7 @@ const Sales = () => {
       });
   }, [currentPage, token, date]);
   useEffect(() => {
-    console.log('date', formatDateToDDMMYYYY(date));
+    // console.log('date', formatDateToDDMMYYYY(date));
     const formatedDate = formatDateToDDMMYYYY(date);
     const apiUrl = `http://127.0.0.1:8000/api/invoice/sales?&search=${formatedDate}`;
     const config = {
@@ -47,7 +47,7 @@ const Sales = () => {
     };
     axios.get(apiUrl, config)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setsalesCalculations(response.data.data);
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ const Sales = () => {
     return `${year}-${month}-${day}`;
   }
   const edit = (id) => {
-    console.log('edit', id);
+    // console.log('edit', id);
     const propsToPass = {
       id: id,
     };

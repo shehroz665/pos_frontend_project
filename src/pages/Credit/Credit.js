@@ -18,7 +18,7 @@ const Credit = () => {
     const [recallApi, setrecallApi] = useState(false);
     useEffect(() => {
       const apiUrl = `http://127.0.0.1:8000/api/invoice/credit?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
-      console.log('url',apiUrl)
+      // console.log('url',apiUrl)
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -27,11 +27,11 @@ const Credit = () => {
       };
       axios.get(apiUrl,config)
         .then((response) => {
-          console.log(response.data.data.data.length)  
+          // console.log(response.data.data.data.length)  
           setinvoice(response.data.data.data);
-          console.log('last->page',response.data.data);
+          // console.log('last->page',response.data.data);
           settotalPages(response.data.data.last_page);
-          console.log('products-> ',response.data.data.data);
+          // console.log('products-> ',response.data.data.data);
         })
         .catch((error) => {
           console.error('Error fetching product data:', error);
@@ -52,8 +52,8 @@ const Credit = () => {
         axios
           .post(apiUrl, data, config)
           .then((response) => {
-            console.log('API Response:', response.data);
-            showSuccessAlert('Credit Invoice updated successfully');
+            //console.log('API Response:', response.data);
+            showSuccessAlert('Credit Invoice '+response.data.data.cust_name+' updated successfully');
             setrecallApi((prev) => !prev);
             navigate('/sales');
           })

@@ -17,7 +17,7 @@ const Invoice = () => {
   const itemsPerPage = 10;
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/invoice?page=${currentPage}&per_page=${itemsPerPage}&search=${search}`;
-    console.log('url',apiUrl)
+    //console.log('url',apiUrl)
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -26,18 +26,18 @@ const Invoice = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.data.length)  
+        //console.log(response.data.data.data.length)  
         setinvoice(response.data.data.data);
-        console.log('last->page',response.data.data);
+        // console.log('last->page',response.data.data);
         settotalPages(response.data.data.last_page);
-        console.log('products-> ',response.data.data.data);
+        // console.log('products-> ',response.data.data.data);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
       });
   }, [currentPage,token,search]);
   const edit=(id)=> {
-    console.log('edit',id);
+    // console.log('edit',id);
     const propsToPass = {
       id: id,
     };
