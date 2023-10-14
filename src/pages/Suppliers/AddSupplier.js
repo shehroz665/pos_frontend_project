@@ -27,8 +27,8 @@ const AddSupplier = () => {
     axios
       .post(apiUrl, data, config)
       .then((response) => {
-        console.log('API Response:', response.data);
-        showSuccessAlert('Supplier added successfully')
+        //console.log('API Response:', response.data);
+        showSuccessAlert('Supplier '+response.data.data.sup_name+' added successfully')
       })
       .catch((error) => {
         console.error('API Error:', error);

@@ -30,7 +30,7 @@ const UpdateSupplier = () => {
           .catch((error) => {
             console.error('Error fetching product data:', error);
           });
-      }, []);
+      }, [id,token]);
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,8 +50,8 @@ const UpdateSupplier = () => {
         axios
           .post(apiUrl, data, config)
           .then((response) => {
-            console.log('API Response:', response.data);
-            showSuccessAlert('Supplier updated successfully')
+           // console.log('API Response:', response.data);
+            showSuccessAlert('Supplier '+response.data.data.sup_name+' updated successfully')
           })
           .catch((error) => {
             console.error('API Error:', error);

@@ -37,7 +37,7 @@ const AchiveSupplier = () => {
       });
   }, [recallApi,currentPage,token]);
   const restoreOrDelete = async(id,status)=> {
-    console.log('id',id,'status',status)
+   // console.log('id',id,'status',status)
     const apiUrl = `http://127.0.0.1:8000/api/supplier/restoreOrDelete/${id}`;
     const data = {
       status:status
@@ -51,10 +51,10 @@ const AchiveSupplier = () => {
     try {
       const response = await axios.post(apiUrl,data, configs);
       if(status===1){
-        showSuccessAlert('Supplier restored successfully');
+        showSuccessAlert('Supplier '+response.data.data.sup_name+' restored successfully');
       }
       else{
-        showSuccessAlert('Supplier deleted successfully');
+        showSuccessAlert('Supplier '+response.data.data.sup_name+' deleted successfully');
       }
       setrecallApi((prev) => !prev);
       navigate('/suppliers');

@@ -28,7 +28,7 @@ const Suppliers = () => {
     };
     axios.get(apiUrl,config)
       .then((response) => {
-        console.log(response.data.data.last_page);
+       // console.log(response.data.data.last_page);
         setCategory(response.data.data.data);
         settotalPages(response.data.data.last_page);
 
@@ -47,8 +47,8 @@ const Suppliers = () => {
     };
     try {
       const response = await axios.delete(apiUrl, configs);
-      console.log('Supplier deleted:', response.data);
-      showSuccessAlert('Supplier deleted successfully');
+      //console.log('Supplier deleted:', response.data);
+      showSuccessAlert('Supplier '+response.data.data.sup_name+' deleted successfully');
       setrecallApi((prev) => !prev);
     } catch (error) {
       console.error('Error deleting Supplier:', error);
@@ -56,14 +56,14 @@ const Suppliers = () => {
     }
   };
   const edit=(id)=> {
-    console.log('edit',id);
+    //console.log('edit',id);
     const propsToPass = {
       id: id,
     };
     navigate('/supplier/update', { state: propsToPass });
   }
   const handleSwitchToggle = async(id) => {
-    console.log('index',id,'token',token)
+    //console.log('index',id,'token',token)
     const apiUrl = `http://127.0.0.1:8000/api/supplier/changeStatus/${id}`;
     const configs = {
       headers: {
@@ -73,7 +73,7 @@ const Suppliers = () => {
     };
     try {
       const response = await axios.post(apiUrl, [],configs);
-      showSuccessAlert('Supplier status updated successfully');
+      showSuccessAlert('Supplier '+response.data.data.sup_name+' status updated successfully');
       setrecallApi((prev) => !prev);
     } catch (error) {
       console.error('Error updating Supplier status:', error);
