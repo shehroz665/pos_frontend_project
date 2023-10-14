@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
                     <Text style={styles.textWithPadding}>Invoice Date: {printContent.created_date}</Text>
                   </View>
                   <View style={styles.section}>
-                    <Text style={styles.textWithPadding}>Shop Name: Malik Bag House</Text>
-                    <Text style={styles.textWithPadding}>Address: P-26,Regal Road,38850, Faisalabad, Pakistan</Text>
+                    <Text style={styles.textWithPadding}>Shop Name: Malik Bedsheet,Parda Cloth & Bag House</Text>
+                    <Text style={styles.textWithPadding}>Address: Rajba Road Near Mandar Sita Raam, Faisalabad</Text>
                     <Text style={styles.textWithPadding}>Contacts: 0300-6643047, 0304-1668462</Text>
                   </View>
                   <View style={styles.section}>
