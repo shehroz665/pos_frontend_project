@@ -5,11 +5,13 @@ import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import Banner from '../Banner';
 import { useLocation } from 'react-router-dom';
+import ClipLoader from "react-spinners/ClipLoader";
 const UpdateProductCategory = () => {
     const location = useLocation();
     const id = location.state.id;
     const [categoryName, setCategoryName] = useState('');
     const token = localStorage.getItem('token');
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
         const apiUrl = `http://127.0.0.1:8000/api/productcategory/${id}`;
@@ -21,7 +23,9 @@ const UpdateProductCategory = () => {
         };
         axios.get(apiUrl,config)
           .then((response) => {
+            setLoading(true);
             setCategoryName(response.data.data.cat_name);
+            setLoading(false);
           })
           .catch((error) => {
             console.error('Error fetching product data:', error);
@@ -56,25 +60,40 @@ const UpdateProductCategory = () => {
         navigate('/productcategory');
       };
   return (
-    <>
-    <Banner title={"Update Product Category"} />
-    <div className="home">
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="categoryName">Category Name:</label>
-          <input
-            type="text"
-            id="categoryName"
-            name="categoryName"
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Update Category</button>
-      </form>
+    <div>
+      {
+        loading ? 
+        <div>
+        <ClipLoader
+          color={'#022888'}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          className="centered-loader"
+        /></div>       
+        :(    <div>
+          <Banner title={"Update Product Category"} />
+          <div className="home">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="categoryName">Category Name:</label>
+                <input
+                  type="text"
+                  id="categoryName"
+                  name="categoryName"
+                  value={categoryName}
+                  onChange={(e) => setCategoryName(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit">Update Category</button>
+            </form>
+          </div>
+          </div>)
+      }
+
     </div>
-    </>
   )
 }
 

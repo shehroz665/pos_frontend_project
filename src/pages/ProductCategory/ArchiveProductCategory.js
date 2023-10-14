@@ -8,7 +8,7 @@ import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
 import { useNavigate } from 'react-router-dom';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
-
+import ClipLoader from "react-spinners/ClipLoader";
 const ArchiveProductCategory = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState([]);
@@ -17,6 +17,7 @@ const ArchiveProductCategory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, settotalPages] = useState(0);
   const itemsPerPage = 10;
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/api/productcategory/archive?page=${currentPage}&per_page=${itemsPerPage}`;
     const config = {
@@ -28,11 +29,14 @@ const ArchiveProductCategory = () => {
     axios.get(apiUrl,config)
       .then((response) => {
         // console.log(response.data.data.data.length)
+        setLoading(true);
         setCategory(response.data.data.data);
         settotalPages(response.data.data.last_page);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
+        setLoading(false);
       });
   }, [recallApi,currentPage,token]);
   const restoreOrDelete = async(id,status)=> {
@@ -69,51 +73,65 @@ const ArchiveProductCategory = () => {
   };
   
   return (
-    <>
-    <Banner title={"Archive Product Category"}/>
-    <div className='home'>
-      <div className='table-container'>
-        <table>
-          <thead>
-            <tr>
-              <th>Sr.</th>
-              <th className='centered'>Name</th>
-              <th className='centered'>Status</th>
-              <th className='centered'>Updated Date</th>
-              <th className='centered'>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-           {category.length===0? <tr>
-      <td colSpan="5" className="centered">
-        No records found
-      </td>
-    </tr>  :(category.map((cat) => (
-              <tr key={cat.cat_id}>
-                <td>{cat.cat_id}</td>
-                <td className='centered'>{cat.cat_name}</td>
-                <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
-                  {"Deleted"}
-                </td>
-                <td className='centered'>{cat.updated_date}</td>
-                <td className='centered'>
-                  <>
-                  <TbIcons.TbRestore onClick={()=> restoreOrDelete(cat.cat_id,1)} size={21} color='#008000'/>
-                  <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>restoreOrDelete(cat.cat_id,3)}/>
-                  </></td>
-              </tr>
-            )))   } 
-          </tbody>
-        </table>
-      </div>
-      <ResponsivePagination
-          current={currentPage}
-          total={totalPages}
-          onPageChange={handlePageChange}
-        />
-    </div>
-    </>
+    <div>
+      {
+        loading ? 
+        <div>
+        <ClipLoader
+          color={'#022888'}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          className="centered-loader"
+        /></div>  
+        : (    <div>
+          <Banner title={"Archive Product Category"}/>
+          <div className='home'>
+            <div className='table-container'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Sr.</th>
+                    <th className='centered'>Name</th>
+                    <th className='centered'>Status</th>
+                    <th className='centered'>Updated Date</th>
+                    <th className='centered'>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 {category.length===0? <tr>
+            <td colSpan="5" className="centered">
+              No records found
+            </td>
+          </tr>  :(category.map((cat) => (
+                    <tr key={cat.cat_id}>
+                      <td>{cat.cat_id}</td>
+                      <td className='centered'>{cat.cat_name}</td>
+                      <td className={`centered ${cat.status === 1 ? 'status-active' : 'status-deactivated'}`}>
+                        {"Deleted"}
+                      </td>
+                      <td className='centered'>{cat.updated_date}</td>
+                      <td className='centered'>
+                        <>
+                        <TbIcons.TbRestore onClick={()=> restoreOrDelete(cat.cat_id,1)} size={21} color='#008000'/>
+                        <MdIcons.MdDelete size={24} color='rgb(206, 32, 32)' onClick={()=>restoreOrDelete(cat.cat_id,3)}/>
+                        </></td>
+                    </tr>
+                  )))   } 
+                </tbody>
+              </table>
+            </div>
+            <ResponsivePagination
+                current={currentPage}
+                total={totalPages}
+                onPageChange={handlePageChange}
+              />
+          </div>
+          </div>)
+      }
 
+    </div>
   )
 }
 

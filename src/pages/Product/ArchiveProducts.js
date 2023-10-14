@@ -111,7 +111,7 @@ const ArchiveProducts = () => {
                 </thead>
                 <tbody>
                  {products.length===0? <tr>
-            <td colSpan="10" className="centered">
+            <td colSpan="11" className="centered">
               No records found
             </td>
           </tr>  :(products.map((prod,index) => (
