@@ -8,7 +8,7 @@ import * as MdIcons from 'react-icons/md';
 import { showErrorAlert } from '../Alerts/Alert';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-
+import ClipLoader from "react-spinners/ClipLoader";
 const AddToCart = () => {
   const navigate = useNavigate();
   const [availableItems, setAvailableItems] = useState([]);
@@ -29,6 +29,7 @@ const AddToCart = () => {
   ];
   const [selectedPaymentMethod, setselectedPaymentMethod] = useState(paymentMethods[0].name);
   const [recallApi, setrecallApi] = useState(false);
+  const [loading, setLoading] = useState(true);
   const addToCart = (item) => {
     const isAlreadySelected = selectedItems.some((selectedItem) => selectedItem.prod_id === item.prod_id);
     if (!isAlreadySelected) {
@@ -158,6 +159,7 @@ const AddToCart = () => {
       .then((response) => {
         // console.log(response.data.data.data)
         setAvailableItems(response.data.data.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching product data:', error);
@@ -180,166 +182,180 @@ const AddToCart = () => {
     }, 0));
   }, [selectedItems])
   return (
-    <>
-      <Banner title={"Add to Cart"} />
-      <div className='home'>
+    <div>
+      {
+        loading?
         <div>
-
-        </div>
-        <div className="add-to-cart-container">
-          <div className="available-items">
-            <h2>Products</h2>
-            <div style={{ marginBottom: '10px' }}>
-              <div className='search-container'>
-                <input
-                  type='text'
-                  placeholder='Search here...'
-                  value={search}
-                  onChange={(e) => setsearch(e.target.value)}
-                />
-              </div>
+        <ClipLoader
+          color={'#022888'}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+          className="centered-loader"
+        /></div>
+        :(    <div>
+          <Banner title={"Add to Cart"} />
+          <div className='home'>
+            <div>
+    
             </div>
-            <div className="scrollable-items">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Sr.</th>
-                    <th>Name</th>
-                    <th>Supplier</th>
-                    <th>Category</th>
-                    <th>Cost</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {availableItems.map((item, index) => (
-                    <tr key={item.prod_id}>
-                      <td>{item.prod_id}</td>
-                      <td>{item.prod_name}</td>
-                      <td>{item.sup_name}</td>
-                      <td>{item.cat_name}</td>
-                      <td>{costVisible[index] ? parseFloat(item.prod_cost).toFixed(0) : '*'.repeat(parseFloat(item.prod_cost).toFixed(0).length)}</td>
-                      <td>{parseInt(item.prod_quantity)}</td>
-                      <td >
-                        <div style={{ display: 'flex', flexDirection: 'row', padding: '10px' }}>
-                          <BiIcons.BiCartDownload onClick={() => addToCart(item)} size={24} color='green' />
-                          <AiIcons.AiFillEyeInvisible onClick={() => toggleCostVisibility(index)} size={24} color='black' />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-          <div className="selected-items">
-            <h2>Cart</h2>
-            <div className='div-margin-down'>
-              <button className='clear-button' onClick={() => setSelectedItems([])}>Clear All</button>
-            </div>
-            <div className="scrollable-items">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedItems.map((item) => (
-                    <tr key={item.prod_id}>
-                      <td>{item.prod_name}</td>
-                      <td>{item.quantity}</td>
-                      <td>
-                        <input
-                          type="number"
-                          value={parseInt(item.prod_selling_price)}
-                          onChange={(e) => handlePriceChange(e, item)}
-                          min={item.prod_cost}
-                        /></td>
-                      <td>
-                        <AiIcons.AiFillPlusCircle onClick={() => incrementQuantity(item)} size={24} color='green' />
-                        <AiIcons.AiOutlineMinusCircle onClick={() => decrementQuantity(item)} size={24} color='rgb(255, 165, 0)' />
-                        <MdIcons.MdDelete onClick={() => clearItem(item)} size={24} color='rgb(206, 32, 32)' />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className='calculation'>
-              <div className="calculation-text">
-                <p>Total Products:</p>
-                <p>Total Quantity:</p>
-                <p>Total Price:</p>
-              </div>
-              <div className="calculation-values">
-                <p>{totalProducts}</p>
-                <p>{totalQuantity}</p>
-                <p>Rs {parseInt(totalPrice)}</p>
-              </div>
-            </div>
-            <div className='customer-details'>
-              {selectedItems.length !== 0 && (
-                <div>
-                  <h2>Customer Details</h2>
-                  <div className='customer-form'>
-                    <label htmlFor='customerName'>Customer Name:</label>
+            <div className="add-to-cart-container">
+              <div className="available-items">
+                <h2>Products</h2>
+                <div style={{ marginBottom: '10px' }}>
+                  <div className='search-container'>
                     <input
                       type='text'
-                      id='customerName'
-                      value={customerName}
-                      onChange={(e) => setcustomerName(e.target.value)}
-                      required
+                      placeholder='Search here...'
+                      value={search}
+                      onChange={(e) => setsearch(e.target.value)}
                     />
-                    <label htmlFor='customerPhoneNumber'>Phone Number:</label>
-                    <input
-                      type='text'
-                      id='customerPhoneNumber'
-                      value={customerPhoneNumber}
-                      onChange={(e) => setcustomerPhoneNumber(e.target.value)}
-                      maxLength={11}
-                      required
-                    />
-                    <label htmlFor='customerPaymentMethod'>Payment Method:</label>
-                    <select
-                      id="customerPaymentMethod"
-                      name="customerPaymentMethod"
-                      value={selectedPaymentMethod}
-                      onChange={(event)=>setselectedPaymentMethod(event.target.value)}
-                      required
-                    >
-                      {paymentMethods.map((pay) => (
-                        <option key={pay.id} value={pay.id}>
-                          {pay.name}
-                        </option>
-                      ))}
-                    </select>
-                    <label htmlFor='customerAmountReceived'>Amount Received:</label>
-                    <input
-                      type='number'
-                      id='customerAmountReceived'
-                      value={totalReceived}
-                      onChange={(e) => settotalReceived(e.target.value)}
-                      required
-                    />
-                    <button  className="invoice-button" onClick={() => createInvoice()}>Generate Invoice</button>
                   </div>
                 </div>
-
-              )}
+                <div className="scrollable-items">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Sr.</th>
+                        <th>Name</th>
+                        <th>Supplier</th>
+                        <th>Category</th>
+                        <th>Cost</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {availableItems.map((item, index) => (
+                        <tr key={item.prod_id}>
+                          <td>{item.prod_id}</td>
+                          <td>{item.prod_name}</td>
+                          <td>{item.sup_name}</td>
+                          <td>{item.cat_name}</td>
+                          <td>{costVisible[index] ? parseFloat(item.prod_cost).toFixed(0) : '*'.repeat(parseFloat(item.prod_cost).toFixed(0).length)}</td>
+                          <td>{parseInt(item.prod_quantity)}</td>
+                          <td >
+                            <div style={{ display: 'flex', flexDirection: 'row', padding: '10px' }}>
+                              <BiIcons.BiCartDownload onClick={() => addToCart(item)} size={24} color='green' />
+                              <AiIcons.AiFillEyeInvisible onClick={() => toggleCostVisibility(index)} size={24} color='black' />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+    
+              </div>
+              <div className="selected-items">
+                <h2>Cart</h2>
+                <div className='div-margin-down'>
+                  <button className='clear-button' onClick={() => setSelectedItems([])}>Clear All</button>
+                </div>
+                <div className="scrollable-items">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedItems.map((item) => (
+                        <tr key={item.prod_id}>
+                          <td>{item.prod_name}</td>
+                          <td>{item.quantity}</td>
+                          <td>
+                            <input
+                              type="number"
+                              value={parseInt(item.prod_selling_price)}
+                              onChange={(e) => handlePriceChange(e, item)}
+                              min={item.prod_cost}
+                            /></td>
+                          <td>
+                            <AiIcons.AiFillPlusCircle onClick={() => incrementQuantity(item)} size={24} color='green' />
+                            <AiIcons.AiOutlineMinusCircle onClick={() => decrementQuantity(item)} size={24} color='rgb(255, 165, 0)' />
+                            <MdIcons.MdDelete onClick={() => clearItem(item)} size={24} color='rgb(206, 32, 32)' />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className='calculation'>
+                  <div className="calculation-text">
+                    <p>Total Products:</p>
+                    <p>Total Quantity:</p>
+                    <p>Total Price:</p>
+                  </div>
+                  <div className="calculation-values">
+                    <p>{totalProducts}</p>
+                    <p>{totalQuantity}</p>
+                    <p>Rs {parseInt(totalPrice)}</p>
+                  </div>
+                </div>
+                <div className='customer-details'>
+                  {selectedItems.length !== 0 && (
+                    <div>
+                      <h2>Customer Details</h2>
+                      <div className='customer-form'>
+                        <label htmlFor='customerName'>Customer Name:</label>
+                        <input
+                          type='text'
+                          id='customerName'
+                          value={customerName}
+                          onChange={(e) => setcustomerName(e.target.value)}
+                          required
+                        />
+                        <label htmlFor='customerPhoneNumber'>Phone Number:</label>
+                        <input
+                          type='text'
+                          id='customerPhoneNumber'
+                          value={customerPhoneNumber}
+                          onChange={(e) => setcustomerPhoneNumber(e.target.value)}
+                          maxLength={11}
+                          required
+                        />
+                        <label htmlFor='customerPaymentMethod'>Payment Method:</label>
+                        <select
+                          id="customerPaymentMethod"
+                          name="customerPaymentMethod"
+                          value={selectedPaymentMethod}
+                          onChange={(event)=>setselectedPaymentMethod(event.target.value)}
+                          required
+                        >
+                          {paymentMethods.map((pay) => (
+                            <option key={pay.id} value={pay.id}>
+                              {pay.name}
+                            </option>
+                          ))}
+                        </select>
+                        <label htmlFor='customerAmountReceived'>Amount Received:</label>
+                        <input
+                          type='number'
+                          id='customerAmountReceived'
+                          value={totalReceived}
+                          onChange={(e) => settotalReceived(e.target.value)}
+                          required
+                        />
+                        <button  className="invoice-button" onClick={() => createInvoice()}>Generate Invoice</button>
+                      </div>
+                    </div>
+    
+                  )}
+                </div>
+              </div>
+    
             </div>
+    
+    
           </div>
-
-        </div>
-
-
-      </div>
-    </>
+        </div>)
+      }
+    </div>
   )
 }
 
