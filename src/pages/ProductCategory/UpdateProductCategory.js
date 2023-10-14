@@ -26,7 +26,7 @@ const UpdateProductCategory = () => {
           .catch((error) => {
             console.error('Error fetching product data:', error);
           });
-      }, []);
+      }, [id,token]);
     
     const handleSubmit = (e) => {
         e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useCallback  } from 'react';
 import "../ProductCategory/AddProductCategory.css"
 import axios from 'axios';
 import { showErrorAlert,showSuccessAlert } from '../Alerts/Alert';
@@ -21,7 +21,31 @@ const UpdateProduct = () => {
     const [supplierArray, setsupplierArray] = useState([]);
     const [categoryArray, setcategoryArray] = useState([]);
     const [sizeArray, setsizeArray] = useState([])
-
+    const getDataFromApi = useCallback(async (previousApiResponse) => {
+      try {
+          const apiUrl = 'http://127.0.0.1:8000/api/product/dropdown';
+          const config = {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+          };
+          const response = await axios.get(apiUrl, config);
+          if (response.status === 200) {
+              const responseData = response.data.data;
+              setsupplierArray(responseData.suppliers);
+              setcategoryArray(responseData.category);
+              setsizeArray(responseData.sizes);
+              setselectedSupplier(previousApiResponse.prod_sup_id);
+              setSelectedCategory(previousApiResponse.prod_cat_id);
+              setselectedSize(previousApiResponse.prod_size_id);
+          } else {
+              console.error('Unexpected response status:', response.status);
+          }
+      } catch (error) {
+          console.error('Error fetching product data:', error);
+      }
+  }, [token]);
     useEffect(() => {
         const apiUrl = `http://127.0.0.1:8000/api/product/${id}`;
         const config = {
@@ -44,7 +68,7 @@ const UpdateProduct = () => {
             console.error('Error fetching product data:', error);
           });
        
-      }, [token,id]);
+      }, [token,id,getDataFromApi]);
     const handleSubmit = (e) => {
         e.preventDefault();
         const apiUrl = `http://127.0.0.1:8000/api/product/update/${id}`;
@@ -92,32 +116,7 @@ const UpdateProduct = () => {
             showErrorAlert(error.message)
           });
       };
-      const getDataFromApi = async (previousApiResponse) => {
-        try {
-           // console.log('prev data',previousApiResponse.sup_name);
-          const apiUrl = 'http://127.0.0.1:8000/api/product/dropdown';
-          const config = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          };   
-          const response = await axios.get(apiUrl, config);
-          if (response.status === 200) {
-            const responseData = response.data.data;
-            setsupplierArray(responseData.suppliers);
-            setcategoryArray(responseData.category);
-            setsizeArray(responseData.sizes);
-            setselectedSupplier(previousApiResponse.prod_sup_id);
-            setSelectedCategory(previousApiResponse.prod_cat_id);
-            setselectedSize(previousApiResponse.prod_size_id)
-          } else {
-            console.error('Unexpected response status:', response.status);
-          }
-        } catch (error) {
-          console.error('Error fetching product data:', error);
-        }
-      };
+
   return (
     <>
       <Banner title={"Add Product"} />
