@@ -47,8 +47,8 @@ const ProductCategory = () => {
     };
     try {
       const response = await axios.delete(apiUrl, configs);
-      console.log('Product category deleted:', response.data);
-      showSuccessAlert('Product category deleted successfully');
+      //console.log('Product category deleted:', response.data);
+      showSuccessAlert('Category ' + response.data.data.cat_name+' deleted successfully');
       setrecallApi((prev) => !prev);
     } catch (error) {
       console.error('Error deleting product category:', error);
@@ -56,14 +56,14 @@ const ProductCategory = () => {
     }
   };
   const edit = (id) => {
-    console.log('edit', id);
+    //console.log('edit', id);
     const propsToPass = {
       id: id,
     };
     navigate('/productcategory/update', { state: propsToPass });
   }
   const handleSwitchToggle = async (id) => {
-    console.log('index', id, 'token', token)
+   // console.log('index', id, 'token', token)
     const apiUrl = `http://127.0.0.1:8000/api/productcategory/changeStatus/${id}`;
     const configs = {
       headers: {
@@ -132,7 +132,7 @@ const ProductCategory = () => {
                         width={42}
                         height={20}
                         onChange={() => handleSwitchToggle(cat.cat_id)}
-                        checked={cat.status == 1 ? true : false}
+                        checked={cat.status === 1 ? true : false}
                         offColor="#CE2020"
                         onColor="#008000"
                       />

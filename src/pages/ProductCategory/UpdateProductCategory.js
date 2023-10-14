@@ -30,7 +30,7 @@ const UpdateProductCategory = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Category Name:', categoryName);
+        //console.log('Category Name:', categoryName);
         const apiUrl = `http://127.0.0.1:8000/api/productcategory/update/${id}`;
         const config = {
           headers: {
@@ -45,8 +45,8 @@ const UpdateProductCategory = () => {
         axios
           .post(apiUrl, data, config)
           .then((response) => {
-            console.log('API Response:', response.data);
-            showSuccessAlert('Category updated successfully')
+            //console.log('API Response:', response.data);
+            showSuccessAlert('Category '+response.data.data.cat_name+ ' updated successfully')
           })
           .catch((error) => {
             console.error('API Error:', error);

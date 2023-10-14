@@ -36,7 +36,7 @@ const ArchiveProductCategory = () => {
       });
   }, [recallApi,currentPage,token]);
   const restoreOrDelete = async(id,status)=> {
-    console.log('id',id,'status',status)
+    //console.log('id',id,'status',status)
     const apiUrl = `http://127.0.0.1:8000/api/productcategory/restoreOrDelete/${id}`;
     const data = {
       status:status
@@ -49,12 +49,12 @@ const ArchiveProductCategory = () => {
     };
     try {
       const response = await axios.post(apiUrl,data, configs);
-      console.log('Product category deleted:', response.data);
+      //console.log('Product category deleted:', response.data);
       if(status===1){
-        showSuccessAlert('Product category restored successfully');
+        showSuccessAlert('Category '+ response.data.data.cat_name+ ' restored successfully');
       }
       else{
-        showSuccessAlert('Product category deleted successfully');
+        showSuccessAlert('Category '+ response.data.data.cat_name+' deleted successfully');
       }
 
       setrecallApi((prev) => !prev);

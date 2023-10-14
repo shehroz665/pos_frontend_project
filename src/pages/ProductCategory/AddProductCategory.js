@@ -10,7 +10,7 @@ const AddProductCategory = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Category Name:', categoryName);
+   // console.log('Category Name:', categoryName);
     const apiUrl = 'http://127.0.0.1:8000/api/productcategory/add';
     const config = {
       headers: {
@@ -25,8 +25,8 @@ const AddProductCategory = () => {
     axios
       .post(apiUrl, data, config)
       .then((response) => {
-        console.log('API Response:', response.data);
-        showSuccessAlert('Category added successfully')
+        //console.log('API Response:', response.data.data.cat_name);
+        showSuccessAlert('Category '+response.data.data.cat_name+' added successfully')
       })
       .catch((error) => {
         console.error('API Error:', error);
