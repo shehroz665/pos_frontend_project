@@ -2,38 +2,6 @@ import React,{useEffect,useState} from 'react';
 import { PDFViewer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-const invoiceData = {
-  invoiceNumber: '2023001',
-  invoiceDate: '01/10/2023',
-  sender: {
-    company: 'Malik Bag House',
-    address: 'P-26 Regal Road',
-    zip: '12345',
-    city: 'Faisalabad',
-    country: 'Pakistan',
-  },
-  client: {
-    company: 'Shehroz',
-    address: '03016036804',
-    zip: '12345',
-    city: 'Faisalabad',
-    country: 'Pakistan',
-  },
-  products: [
-    {
-      description: 'Product 1',
-      quantity: 2,
-      price: 10,
-    },
-    {
-      description: 'Product 2',
-      quantity: 3,
-      price: 15,
-    },
-  ],
-  bottomNotice: 'Thank you for your business!',
-};
-
 const styles = StyleSheet.create({
     page: {
       fontFamily: 'Helvetica',
@@ -99,7 +67,7 @@ const styles = StyleSheet.create({
       };
       axios.get(apiUrl, config)
         .then((response) => {
-          console.log('API Response:', response.data.data);
+          // console.log('API Response:', response.data.data);
           setprintContent(response.data.data);
           setproducts(response.data.data.products);
           console.log(response.data.data.products);
