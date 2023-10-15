@@ -23,7 +23,7 @@ const UpdateProductCategory = () => {
         };
         axios.get(apiUrl,config)
           .then((response) => {
-            setLoading(true);
+            // setLoading(true);
             setCategoryName(response.data.data.cat_name);
             setLoading(false);
           })
