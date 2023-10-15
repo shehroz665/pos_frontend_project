@@ -55,8 +55,8 @@ const Button = styled.button`
 `;
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@gmail.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
     const apiUrl = 'http://127.0.0.1:8000/api/login'; 
